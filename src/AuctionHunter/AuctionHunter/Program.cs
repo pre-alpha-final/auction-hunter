@@ -26,6 +26,7 @@ namespace AuctionHunter
 		{
 			var services = new ServiceCollection();
 			services.AddTransient<IAuctionHunterCore, AuctionHunterCore>();
+			services.AddTransient<IWebClient, DefaultWebClient>();
 			Container = services.BuildServiceProvider();
 		}
 	}
