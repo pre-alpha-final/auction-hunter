@@ -6,7 +6,6 @@ namespace AuctionHunter.Infrastructure.Implementation
 {
 	public class AuctionHunterCore : IAuctionHunterCore
 	{
-		// Builder filled section
 		public string Name { get; set; }
 		public int NumberOfPages { get; set; }
 		public int NumberOfDays { get; set; }
@@ -15,43 +14,40 @@ namespace AuctionHunter.Infrastructure.Implementation
 		public IItemsExtractor ItemsExtractor { get; set; }
 		public ITitleExtractor TitleExtractor { get; set; }
 		public IAuctionLinkExtractor AuctionLinkExtractor { get; set; }
-		public List<string> SkipPatterns { get; set; }
-		// Builder filled section
-
-		private List<AuctionItem> _savedAuctionItems = new List<AuctionItem>();
-		private List<AuctionItem> _allAuctionItems = new List<AuctionItem>();
-		private List<AuctionItem> _resultAuctionItems = new List<AuctionItem>();
+		public IList<string> SkipPatterns { get; set; }
 
 		public void Run()
 		{
+			var allAuctionItems = new List<AuctionItem>();
 			for (int i = 1; i <= NumberOfPages; i++)
 			{
 				Console.WriteLine($"Doing page number: {i}\n");
 				var url = UrlProvider.GetNextUrl();
 				var page = WebClient.Get(url);
 				var items = ItemsExtractor.GetItems(page);
-				_allAuctionItems.AddRange(ConvertItems(items));
+				allAuctionItems.AddRange(ConvertItems(items.ToList()));
 			}
 
-			_savedAuctionItems = Load($"{Name}.cache");
-			foreach(var item in _allAuctionItems)
+			var savedAuctionItems = Load($"{Name}.cache").ToList();
+			var resultAuctionItems = new List<AuctionItem>();
+			foreach(var item in allAuctionItems)
 			{
-				var oldItem = _savedAuctionItems.Where(e => e.AuctionLink == item.AuctionLink).FirstOrDefault();
+				var oldItem = savedAuctionItems.Where(e => e.AuctionLink == item.AuctionLink).FirstOrDefault();
 				if (oldItem == null)
 				{
-					_resultAuctionItems.Add(item);
-					_savedAuctionItems.Add(item);
+					resultAuctionItems.Add(item);
+					savedAuctionItems.Add(item);
 				}
 				else if (DateTime.Compare(item.Timestamp, oldItem.Timestamp + TimeSpan.FromDays(NumberOfDays)) > 0)
 				{
-					_resultAuctionItems.Add(item);
+					resultAuctionItems.Add(item);
 				}
 			}
-			Save($"{Name}.cache", _savedAuctionItems);
-			Save($"{Name}_Results.txt", _resultAuctionItems);
+			Save($"{Name}.cache", savedAuctionItems);
+			Save($"{Name}_Results.txt", resultAuctionItems);
 		}
 
-		private List<AuctionItem> ConvertItems(List<AuctionItem> items)
+		private List<AuctionItem> ConvertItems(List<string> items)
 		{
 			var convertedItems = new List<AuctionItem>();
 			foreach (var item in items)
@@ -71,7 +67,7 @@ namespace AuctionHunter.Infrastructure.Implementation
 			return convertedItems;
 		}
 
-		private List<AuctionItem> Load(string name)
+		private IList<AuctionItem> Load(string name)
 		{
 			throw new NotImplementedException();
 		}
