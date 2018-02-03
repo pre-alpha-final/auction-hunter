@@ -1,12 +1,32 @@
-﻿using System;
+﻿using AuctionHunter.Infrastructure;
+using AuctionHunter.Infrastructure.Implementation;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace AuctionHunter
 {
-    class Program
+	class Program
     {
-        static void Main(string[] args)
+		public static IServiceProvider Container { get; private set; }
+
+		static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-        }
-    }
+            Console.WriteLine("Booting up\n");
+
+			RegisterServices();
+
+			var auctionHunter = Container.GetService<IAuctionHunterCore>();
+			auctionHunter.Run();
+
+			Console.WriteLine("\nDone");
+			Console.ReadKey(true);
+		}
+
+		private static void RegisterServices()
+		{
+			var services = new ServiceCollection();
+			services.AddTransient<IAuctionHunterCore, AuctionHunterCore>();
+			Container = services.BuildServiceProvider();
+		}
+	}
 }
