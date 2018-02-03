@@ -7,11 +7,13 @@ namespace AuctionHunter.Infrastructure.Builders
 	{
 		private string _name;
 		private int _numberOfPages;
+		private int _numberOfDays;
 		private string _baseUrl;
 		private IUrlProvider _urlProvider;
+		private IWebClient _webClient;
 		private IItemsExtractor _itemsExtractor;
-		private IAuctionLinkExtractor _auctionLinkExtractor;
 		private ITitleExtractor _titleExtractor;
+		private IAuctionLinkExtractor _auctionLinkExtractor;
 		private List<string> _skipPatterns = new List<string>();
 
 		AuctionHunterCoreBuilder SetName(string name)
@@ -26,10 +28,27 @@ namespace AuctionHunter.Infrastructure.Builders
 			return this;
 		}
 
-		AuctionHunterCoreBuilder SetUrlProvider(string baseUrl, IUrlProvider urlProvider)
+		AuctionHunterCoreBuilder SetNumberOfDays(int numberOfDays)
+		{
+			_numberOfDays = numberOfDays;
+			return this;
+		}
+
+		AuctionHunterCoreBuilder SetBaseUrl(string baseUrl)
 		{
 			_baseUrl = baseUrl;
+			return this;
+		}
+
+		AuctionHunterCoreBuilder SetUrlProvider(IUrlProvider urlProvider)
+		{
 			_urlProvider = urlProvider;
+			return this;
+		}
+
+		AuctionHunterCoreBuilder SetUrlProvider(IWebClient webClient)
+		{
+			_webClient = webClient;
 			return this;
 		}
 
@@ -39,15 +58,15 @@ namespace AuctionHunter.Infrastructure.Builders
 			return this;
 		}
 
-		AuctionHunterCoreBuilder SetAuctionLinkExtractor(IAuctionLinkExtractor auctionLinkExtractor)
-		{
-			_auctionLinkExtractor = auctionLinkExtractor;
-			return this;
-		}
-
 		AuctionHunterCoreBuilder SetTitleExtractor(ITitleExtractor titleExtractor)
 		{
 			_titleExtractor = titleExtractor;
+			return this;
+		}
+
+		AuctionHunterCoreBuilder SetAuctionLinkExtractor(IAuctionLinkExtractor auctionLinkExtractor)
+		{
+			_auctionLinkExtractor = auctionLinkExtractor;
 			return this;
 		}
 
@@ -59,15 +78,18 @@ namespace AuctionHunter.Infrastructure.Builders
 
 		public IAuctionHunterCore Build()
 		{
+			_urlProvider.BaseUrl = _baseUrl;
+
 			return new AuctionHunterCore
 			{
 				Name = _name,
 				NumberOfPages = _numberOfPages,
-				BaseUrl = _baseUrl,
+				NumberOfDays = _numberOfDays,
 				UrlProvider = _urlProvider,
+				WebClient = _webClient,
 				ItemsExtractor = _itemsExtractor,
-				AuctionLinkExtractor = _auctionLinkExtractor,
 				TitleExtractor = _titleExtractor,
+				AuctionLinkExtractor = _auctionLinkExtractor,
 				SkipPatterns = _skipPatterns,
 			};
 		}
