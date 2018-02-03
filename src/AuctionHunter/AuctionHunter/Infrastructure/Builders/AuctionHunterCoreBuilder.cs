@@ -16,61 +16,61 @@ namespace AuctionHunter.Infrastructure.Builders
 		private IAuctionLinkExtractor _auctionLinkExtractor;
 		private List<string> _skipPatterns = new List<string>();
 
-		AuctionHunterCoreBuilder SetName(string name)
+		public AuctionHunterCoreBuilder SetName(string name)
 		{
 			_name = name;
 			return this;
 		}
 
-		AuctionHunterCoreBuilder SetNumberOfPages(int numberOfPages)
+		public AuctionHunterCoreBuilder SetNumberOfPages(int numberOfPages)
 		{
 			_numberOfPages = numberOfPages;
 			return this;
 		}
 
-		AuctionHunterCoreBuilder SetNumberOfDays(int numberOfDays)
+		public AuctionHunterCoreBuilder SetNumberOfDays(int numberOfDays)
 		{
 			_numberOfDays = numberOfDays;
 			return this;
 		}
 
-		AuctionHunterCoreBuilder SetBaseUrl(string baseUrl)
+		public AuctionHunterCoreBuilder SetBaseUrl(string baseUrl)
 		{
 			_baseUrl = baseUrl;
 			return this;
 		}
 
-		AuctionHunterCoreBuilder SetUrlProvider(IUrlProvider urlProvider)
+		public AuctionHunterCoreBuilder SetUrlProvider(IUrlProvider urlProvider)
 		{
 			_urlProvider = urlProvider;
 			return this;
 		}
 
-		AuctionHunterCoreBuilder SetUrlProvider(IWebClient webClient)
+		public AuctionHunterCoreBuilder SetWebClient(IWebClient webClient)
 		{
 			_webClient = webClient;
 			return this;
 		}
 
-		AuctionHunterCoreBuilder SetItemsExtractor(IItemsExtractor itemsExtractor)
+		public AuctionHunterCoreBuilder SetItemsExtractor(IItemsExtractor itemsExtractor)
 		{
 			_itemsExtractor = itemsExtractor;
 			return this;
 		}
 
-		AuctionHunterCoreBuilder SetTitleExtractor(ITitleExtractor titleExtractor)
+		public AuctionHunterCoreBuilder SetTitleExtractor(ITitleExtractor titleExtractor)
 		{
 			_titleExtractor = titleExtractor;
 			return this;
 		}
 
-		AuctionHunterCoreBuilder SetAuctionLinkExtractor(IAuctionLinkExtractor auctionLinkExtractor)
+		public AuctionHunterCoreBuilder SetAuctionLinkExtractor(IAuctionLinkExtractor auctionLinkExtractor)
 		{
 			_auctionLinkExtractor = auctionLinkExtractor;
 			return this;
 		}
 
-		AuctionHunterCoreBuilder AddSkipPattern(string skipPattern)
+		public AuctionHunterCoreBuilder AddSkipPattern(string skipPattern)
 		{
 			_skipPatterns.Add(skipPattern);
 			return this;
