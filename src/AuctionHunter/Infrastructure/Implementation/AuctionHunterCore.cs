@@ -34,7 +34,7 @@ namespace AuctionHunter.Infrastructure.Implementation
 				var url = UrlProvider.GetNextUrl();
 				var page = await WebClient.Get(url);
 				var items = ItemsExtractor.GetItems(page);
-				allAuctionItems.AddRange(ConvertItems(items.ToList()));
+				allAuctionItems.AddRange(ConvertItems(i, items.ToList()));
 			}
 			UpdateLists(allAuctionItems, savedAuctionItems, out var resultAuctionItems);
 
@@ -42,7 +42,7 @@ namespace AuctionHunter.Infrastructure.Implementation
 			Save($"{Name}_Results.txt", resultAuctionItems);
 		}
 
-		private IList<AuctionItem> ConvertItems(List<string> items)
+		private IList<AuctionItem> ConvertItems(int pageNumber, List<string> items)
 		{
 			var convertedItems = new List<AuctionItem>();
 			foreach (var item in items)
@@ -53,8 +53,9 @@ namespace AuctionHunter.Infrastructure.Implementation
 					continue;
 				convertedItems.Add(new AuctionItem
 				{
-					Content = content,
 					AuctionLink = auctionLink,
+					OnPage = pageNumber,
+					Content = content,
 					Timestamp = _initialRun ? DateTime.MinValue : DateTime.Now,
 				});
 			}
