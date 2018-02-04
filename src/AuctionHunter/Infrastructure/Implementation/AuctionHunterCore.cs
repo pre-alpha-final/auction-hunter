@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AuctionHunter.Infrastructure.Implementation
 {
@@ -20,7 +21,7 @@ namespace AuctionHunter.Infrastructure.Implementation
 
 		private bool _initialRun;
 
-		public void Run()
+		public async Task Run()
 		{
 			var savedAuctionItems = Load($"{Name}.cache").ToList();
 			if (savedAuctionItems.Count == 0)
@@ -31,7 +32,7 @@ namespace AuctionHunter.Infrastructure.Implementation
 			{
 				Console.WriteLine($"Doing page number: {i}");
 				var url = UrlProvider.GetNextUrl();
-				var page = WebClient.Get(url);
+				var page = await WebClient.Get(url);
 				var items = ItemsExtractor.GetItems(page);
 				allAuctionItems.AddRange(ConvertItems(items.ToList()));
 			}

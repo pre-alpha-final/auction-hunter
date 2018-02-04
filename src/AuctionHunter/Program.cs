@@ -4,6 +4,7 @@ using AuctionHunter.Infrastructure.Builders;
 using AuctionHunter.Infrastructure.Implementation;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 
 namespace AuctionHunter
 {
@@ -11,7 +12,7 @@ namespace AuctionHunter
     {
 		public static IServiceProvider Container { get; private set; }
 
-		static void Main(string[] args)
+		static async Task Main(string[] args)
         {
             Console.WriteLine("Booting up\n");
 
@@ -32,7 +33,7 @@ namespace AuctionHunter
 				.AddSkipPattern("Random Steam Key")
 				.AddSkipPattern("Steam Gift Card")
 				.Build();
-			auctionHunter.Run();
+			await auctionHunter.Run();
 
 			Console.WriteLine("\nDone");
 			Console.ReadKey(true);

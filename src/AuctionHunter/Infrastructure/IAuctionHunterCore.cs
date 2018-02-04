@@ -1,7 +1,9 @@
-﻿namespace AuctionHunter.Infrastructure
+﻿using System.Threading.Tasks;
+
+namespace AuctionHunter.Infrastructure
 {
 	public interface IAuctionHunterCore
     {
-		void Run();
+		Task Run();
     }
 }
