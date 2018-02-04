@@ -27,8 +27,8 @@ namespace AuctionHunter
 				.SetUrlProvider(Container.GetService<IUrlProvider>())
 				.SetWebClient(Container.GetService<IWebClient>())
 				.SetItemsExtractor(Container.GetService<IItemsExtractor>())
-				.SetTitleExtractor(Container.GetService<ITitleExtractor>())
 				.SetAuctionLinkExtractor(Container.GetService<IAuctionLinkExtractor>())
+				.SetContentExtractor(Container.GetService<IContentExtractor>())
 				.AddSkipPattern("Random PREMIUM Steam Key")
 				.AddSkipPattern("Random Steam Key")
 				.AddSkipPattern("Steam Gift Card")
@@ -45,7 +45,7 @@ namespace AuctionHunter
 			services.AddTransient<IWebClient, DefaultWebClient>();
 			services.AddTransient<IAuctionLinkExtractor, G2AAuctionLinkExtractor>();
 			services.AddTransient<IItemsExtractor, G2AItemsExtractor>();
-			services.AddTransient<ITitleExtractor, G2ATitleExtractor>();
+			services.AddTransient<IContentExtractor, G2AContentExtractor>();
 			services.AddTransient<IUrlProvider, G2AUrlProvider>();
 			Container = services.BuildServiceProvider();
 		}

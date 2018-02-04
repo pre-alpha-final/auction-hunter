@@ -15,8 +15,8 @@ namespace AuctionHunter.Infrastructure.Implementation
 		public IUrlProvider UrlProvider { get; set; }
 		public IWebClient WebClient { get; set; }
 		public IItemsExtractor ItemsExtractor { get; set; }
-		public ITitleExtractor TitleExtractor { get; set; }
 		public IAuctionLinkExtractor AuctionLinkExtractor { get; set; }
+		public IContentExtractor ContentExtractor { get; set; }
 		public IList<string> SkipPatterns { get; set; }
 
 		private bool _initialRun;
@@ -38,7 +38,7 @@ namespace AuctionHunter.Infrastructure.Implementation
 			}
 			UpdateLists(allAuctionItems, savedAuctionItems, out var resultAuctionItems);
 
-			Save($"{Name}.cache", savedAuctionItems);
+			Save($"{Name}.cache", savedAuctionItems, Formatting.None);
 			Save($"{Name}_Results.txt", resultAuctionItems);
 		}
 
@@ -47,13 +47,13 @@ namespace AuctionHunter.Infrastructure.Implementation
 			var convertedItems = new List<AuctionItem>();
 			foreach (var item in items)
 			{
-				var title = TitleExtractor.Extract(item);
 				var auctionLink = AuctionLinkExtractor.Extract(item);
-				if (SkipPatterns.Any(e => title.Contains(e)))
+				var content = ContentExtractor.Extract(item);
+				if (SkipPatterns.Any(e => content.ToString().Contains(e)))
 					continue;
 				convertedItems.Add(new AuctionItem
 				{
-					Title = title,
+					Content = content,
 					AuctionLink = auctionLink,
 					Timestamp = _initialRun ? DateTime.MinValue : DateTime.Now,
 				});
@@ -94,11 +94,11 @@ namespace AuctionHunter.Infrastructure.Implementation
 			}
 		}
 
-		private void Save(string name, List<AuctionItem> items)
+		private void Save(string name, List<AuctionItem> items, Formatting formatting = Formatting.Indented)
 		{
 			using (StreamWriter w = File.CreateText(name))
 			{
-				w.Write(JsonConvert.SerializeObject(items, Formatting.Indented));
+				w.Write(JsonConvert.SerializeObject(items, formatting));
 			}
 		}
 	}

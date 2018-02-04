@@ -12,8 +12,8 @@ namespace AuctionHunter.Infrastructure.Builders
 		private IUrlProvider _urlProvider;
 		private IWebClient _webClient;
 		private IItemsExtractor _itemsExtractor;
-		private ITitleExtractor _titleExtractor;
 		private IAuctionLinkExtractor _auctionLinkExtractor;
+		private IContentExtractor _contentExtractor;
 		private List<string> _skipPatterns = new List<string>();
 
 		public AuctionHunterCoreBuilder SetName(string name)
@@ -58,15 +58,15 @@ namespace AuctionHunter.Infrastructure.Builders
 			return this;
 		}
 
-		public AuctionHunterCoreBuilder SetTitleExtractor(ITitleExtractor titleExtractor)
-		{
-			_titleExtractor = titleExtractor;
-			return this;
-		}
-
 		public AuctionHunterCoreBuilder SetAuctionLinkExtractor(IAuctionLinkExtractor auctionLinkExtractor)
 		{
 			_auctionLinkExtractor = auctionLinkExtractor;
+			return this;
+		}
+
+		public AuctionHunterCoreBuilder SetContentExtractor(IContentExtractor contentExtractor)
+		{
+			_contentExtractor = contentExtractor;
 			return this;
 		}
 
@@ -88,8 +88,8 @@ namespace AuctionHunter.Infrastructure.Builders
 				UrlProvider = _urlProvider,
 				WebClient = _webClient,
 				ItemsExtractor = _itemsExtractor,
-				TitleExtractor = _titleExtractor,
 				AuctionLinkExtractor = _auctionLinkExtractor,
+				ContentExtractor = _contentExtractor,
 				SkipPatterns = _skipPatterns,
 			};
 		}
