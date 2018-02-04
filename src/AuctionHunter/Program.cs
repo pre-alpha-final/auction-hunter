@@ -20,7 +20,7 @@ namespace AuctionHunter
 			var auctionHunterCoreBuilder = new AuctionHunterCoreBuilder();
 			var auctionHunter = auctionHunterCoreBuilder
 				.SetName("G2A")
-				.SetNumberOfPages(2)
+				.SetNumberOfPages(100)
 				.SetNumberOfDays(30)
 				.SetBaseUrl("https://www.g2a.com/new/api/products/filter?category_id=games&changeType=PAGINATION&currency=PLN&min_price[max]=100&min_price[min]=0&page=&platform=1&store=polish")
 				.SetUrlProvider(Container.GetService<IUrlProvider>())
