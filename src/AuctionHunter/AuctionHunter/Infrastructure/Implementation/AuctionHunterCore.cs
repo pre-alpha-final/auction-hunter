@@ -18,8 +18,14 @@ namespace AuctionHunter.Infrastructure.Implementation
 		public IAuctionLinkExtractor AuctionLinkExtractor { get; set; }
 		public IList<string> SkipPatterns { get; set; }
 
+		private bool _initialRun;
+
 		public void Run()
 		{
+			var savedAuctionItems = Load($"{Name}.cache").ToList();
+			if (savedAuctionItems.Count == 0)
+				_initialRun = true;
+
 			var allAuctionItems = new List<AuctionItem>();
 			for (int i = 1; i <= NumberOfPages; i++)
 			{
@@ -30,11 +36,8 @@ namespace AuctionHunter.Infrastructure.Implementation
 				allAuctionItems.AddRange(ConvertItems(items.ToList()));
 			}
 
-			var savedAuctionItems = Load($"{Name}.cache").ToList();
-			var resultAuctionItems = GetResultAuctionItemList(allAuctionItems, savedAuctionItems).ToList();
-
 			Save($"{Name}.cache", savedAuctionItems);
-			Save($"{Name}_Results.txt", resultAuctionItems);
+			Save($"{Name}_Results.txt", GetResultAuctionItemList(allAuctionItems, savedAuctionItems).ToList());
 		}
 
 		private IList<AuctionItem> ConvertItems(List<string> items)
@@ -50,7 +53,7 @@ namespace AuctionHunter.Infrastructure.Implementation
 				{
 					Title = title,
 					AuctionLink = auctionLink,
-					Timestamp = DateTime.Now,
+					Timestamp = _initialRun ? DateTime.MinValue : DateTime.Now,
 				});
 			}
 
