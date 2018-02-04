@@ -1,4 +1,5 @@
 ﻿using AuctionHunter.Infrastructure;
+using Newtonsoft.Json.Linq;
 
 namespace AuctionHunter.G2A.Implementation
 {
@@ -6,7 +7,8 @@ namespace AuctionHunter.G2A.Implementation
 	{
 		public string Extract(string item)
 		{
-			throw new System.NotImplementedException();
+			var token = JObject.Parse(item);
+			return token.SelectToken("$.name").ToString();
 		}
 	}
 }

@@ -1,5 +1,5 @@
 ﻿using AuctionHunter.Infrastructure;
-using System;
+using Newtonsoft.Json.Linq;
 
 namespace AuctionHunter.G2A.Implementation
 {
@@ -7,7 +7,9 @@ namespace AuctionHunter.G2A.Implementation
 	{
 		public string Extract(string item)
 		{
-			throw new NotImplementedException();
+			var token = JObject.Parse(item);
+			var slug = token.SelectToken("$.slug").ToString();
+			return $"https://www.g2a.com/pl-pl/{slug}";
 		}
 	}
 }

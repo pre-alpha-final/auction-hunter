@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AuctionHunter.Infrastructure;
+using Newtonsoft.Json.Linq;
 
 namespace AuctionHunter.G2A.Implementation
 {
@@ -7,7 +9,10 @@ namespace AuctionHunter.G2A.Implementation
 	{
 		public IList<string> GetItems(string page)
 		{
-			throw new System.NotImplementedException();
+			var token = JObject.Parse(page);
+			var items = token.SelectTokens("$.products[*]").Select(e => e.ToString()).ToList();
+
+			return items;
 		}
 	}
 }
