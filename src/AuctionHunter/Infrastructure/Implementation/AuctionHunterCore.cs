@@ -35,9 +35,10 @@ namespace AuctionHunter.Infrastructure.Implementation
 				var items = ItemsExtractor.GetItems(page);
 				allAuctionItems.AddRange(ConvertItems(items.ToList()));
 			}
+			UpdateLists(allAuctionItems, savedAuctionItems, out var resultAuctionItems);
 
 			Save($"{Name}.cache", savedAuctionItems);
-			Save($"{Name}_Results.txt", GetResultAuctionItemList(allAuctionItems, savedAuctionItems).ToList());
+			Save($"{Name}_Results.txt", resultAuctionItems);
 		}
 
 		private IList<AuctionItem> ConvertItems(List<string> items)
@@ -60,9 +61,9 @@ namespace AuctionHunter.Infrastructure.Implementation
 			return convertedItems;
 		}
 
-		private IList<AuctionItem> GetResultAuctionItemList(List<AuctionItem> allAuctionItems, List<AuctionItem> savedAuctionItems)
+		private IList<AuctionItem> UpdateLists(List<AuctionItem> allAuctionItems, List<AuctionItem> savedAuctionItems, out List<AuctionItem> resultAuctionItems)
 		{
-			var resultAuctionItems = new List<AuctionItem>();
+			resultAuctionItems = new List<AuctionItem>();
 			foreach (var item in allAuctionItems)
 			{
 				var oldItem = savedAuctionItems.Where(e => e.AuctionLink == item.AuctionLink).FirstOrDefault();
