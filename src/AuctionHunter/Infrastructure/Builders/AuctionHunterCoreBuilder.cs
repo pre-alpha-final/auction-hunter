@@ -14,7 +14,7 @@ namespace AuctionHunter.Infrastructure.Builders
 		private IItemsExtractor _itemsExtractor;
 		private IAuctionLinkExtractor _auctionLinkExtractor;
 		private IContentExtractor _contentExtractor;
-		private List<string> _skipPatterns = new List<string>();
+		private readonly IList<string> _skipPatterns = new List<string>();
 
 		public AuctionHunterCoreBuilder SetName(string name)
 		{

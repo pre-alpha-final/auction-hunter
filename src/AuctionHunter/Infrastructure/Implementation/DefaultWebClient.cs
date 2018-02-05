@@ -8,7 +8,7 @@ namespace AuctionHunter.Infrastructure.Implementation
 	{
 		public async Task<string> Get(string url)
 		{
-			for (int i = 0; i < 10; i++)
+			for (var i = 0; i < 10; i++)
 			{
 				var contents = GetContents(url);
 				if (contents != null)
@@ -20,11 +20,11 @@ namespace AuctionHunter.Infrastructure.Implementation
 			return string.Empty;
 		}
 
-		private string GetContents(string url)
+		private static string GetContents(string url)
 		{
 			try
 			{
-				using (WebClient client = new WebClient())
+				using (var client = new WebClient())
 				{
 					client.Headers["User-Agent"] =
 						"Mozilla/4.0 (Compatible; Windows NT 5.1; MSIE 6.0) " +

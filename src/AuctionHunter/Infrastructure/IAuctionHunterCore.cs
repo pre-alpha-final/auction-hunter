@@ -3,7 +3,7 @@
 namespace AuctionHunter.Infrastructure
 {
 	public interface IAuctionHunterCore
-    {
+	{
 		Task Run();
-    }
+	}
 }

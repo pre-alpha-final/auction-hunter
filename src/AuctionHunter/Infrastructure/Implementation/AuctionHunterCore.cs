@@ -28,7 +28,7 @@ namespace AuctionHunter.Infrastructure.Implementation
 				_initialRun = true;
 
 			var allAuctionItems = new List<AuctionItem>();
-			for (int i = 1; i <= NumberOfPages; i++)
+			for (var i = 1; i <= NumberOfPages; i++)
 			{
 				Console.WriteLine($"Doing page number: {i}");
 				var url = UrlProvider.GetNextUrl();
@@ -38,11 +38,11 @@ namespace AuctionHunter.Infrastructure.Implementation
 			}
 			UpdateLists(allAuctionItems, savedAuctionItems, out var resultAuctionItems);
 
-			Save($"{Name}.cache", savedAuctionItems, Formatting.None);
+			Save($"{Name}.cache", savedAuctionItems);
 			Save($"{Name}_Results.txt", resultAuctionItems);
 		}
 
-		private IList<AuctionItem> ConvertItems(int pageNumber, List<string> items)
+		private IEnumerable<AuctionItem> ConvertItems(int pageNumber, IEnumerable<string> items)
 		{
 			var convertedItems = new List<AuctionItem>();
 			foreach (var item in items)
@@ -63,12 +63,12 @@ namespace AuctionHunter.Infrastructure.Implementation
 			return convertedItems;
 		}
 
-		private IList<AuctionItem> UpdateLists(List<AuctionItem> allAuctionItems, List<AuctionItem> savedAuctionItems, out List<AuctionItem> resultAuctionItems)
+		private void UpdateLists(IEnumerable<AuctionItem> allAuctionItems, ICollection<AuctionItem> savedAuctionItems, out List<AuctionItem> resultAuctionItems)
 		{
 			resultAuctionItems = new List<AuctionItem>();
 			foreach (var item in allAuctionItems)
 			{
-				var oldItem = savedAuctionItems.Where(e => e.AuctionLink == item.AuctionLink).FirstOrDefault();
+				var oldItem = savedAuctionItems.FirstOrDefault(e => e.AuctionLink == item.AuctionLink);
 				if (oldItem == null)
 				{
 					resultAuctionItems.Add(item);
@@ -79,25 +79,23 @@ namespace AuctionHunter.Infrastructure.Implementation
 					resultAuctionItems.Add(item);
 				}
 			}
-
-			return resultAuctionItems;
 		}
 
-		private IList<AuctionItem> Load(string name)
+		private static IEnumerable<AuctionItem> Load(string name)
 		{
 			if (File.Exists(name) == false)
 				return new List<AuctionItem>();
 
-			using (StreamReader r = new StreamReader(name))
+			using (var r = new StreamReader(name))
 			{
 				var json = r.ReadToEnd();
 				return JsonConvert.DeserializeObject<List<AuctionItem>>(json);
 			}
 		}
 
-		private void Save(string name, List<AuctionItem> items, Formatting formatting = Formatting.Indented)
+		private static void Save(string name, List<AuctionItem> items, Formatting formatting = Formatting.Indented)
 		{
-			using (StreamWriter w = File.CreateText(name))
+			using (var w = File.CreateText(name))
 			{
 				w.Write(JsonConvert.SerializeObject(items, formatting));
 			}

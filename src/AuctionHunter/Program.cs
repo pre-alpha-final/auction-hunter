@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace AuctionHunter
 {
-	class Program
-    {
+	internal class Program
+	{
 		public static IServiceProvider Container { get; private set; }
 
 		static async Task Main(string[] args)
-        {
-            Console.WriteLine("Booting up\n");
+		{
+			Console.WriteLine("Booting up\n");
 
 			RegisterServices();
 
