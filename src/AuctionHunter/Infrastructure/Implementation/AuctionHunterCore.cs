@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AuctionHunter.Infrastructure.Serializers;
 
 namespace AuctionHunter.Infrastructure.Implementation
 {
@@ -23,7 +24,7 @@ namespace AuctionHunter.Infrastructure.Implementation
 
 		public async Task Run()
 		{
-			var savedAuctionItems = Load($"{Name}.cache").ToList();
+			var savedAuctionItems = Load<AuctionItemCache>($"{Name}.cache").ToList();
 			if (savedAuctionItems.Count == 0)
 				_initialRun = true;
 
@@ -56,44 +57,60 @@ namespace AuctionHunter.Infrastructure.Implementation
 					AuctionLink = auctionLink,
 					OnPage = pageNumber,
 					Content = content,
-					Timestamp = _initialRun ? DateTime.MinValue : DateTime.Now,
+                    MarkedAsRead = _initialRun,
+					Timestamp = DateTime.Now,
 				});
 			}
 
 			return convertedItems;
 		}
 
-		private void UpdateLists(IEnumerable<AuctionItem> allAuctionItems, ICollection<AuctionItem> savedAuctionItems, out List<AuctionItem> resultAuctionItems)
+		private void UpdateLists(IEnumerable<AuctionItem> allAuctionItems, ICollection<AuctionItemCache> savedAuctionItems, out List<AuctionItemShow> resultAuctionItems)
 		{
-			resultAuctionItems = new List<AuctionItem>();
+			resultAuctionItems = new List<AuctionItemShow>();
 			foreach (var item in allAuctionItems)
 			{
 				var oldItem = savedAuctionItems.FirstOrDefault(e => e.AuctionLink == item.AuctionLink);
 				if (oldItem == null)
 				{
-					resultAuctionItems.Add(item);
-					savedAuctionItems.Add(item);
+					resultAuctionItems.Add(new AuctionItemShow
+					{
+					    AuctionLink = item.AuctionLink,
+                        OnPage = item.OnPage,
+                        Content = item.Content,
+					});
+					savedAuctionItems.Add(new AuctionItemCache
+					{
+					    AuctionLink = item.AuctionLink,
+					    MarkedAsRead = item.MarkedAsRead,
+					    Timestamp = item.Timestamp,
+					});
 				}
-				else if (DateTime.Compare(item.Timestamp, oldItem.Timestamp + TimeSpan.FromDays(NumberOfDays)) < 0)
+				else if (oldItem.MarkedAsRead == false && DateTime.Compare(item.Timestamp, oldItem.Timestamp + TimeSpan.FromDays(NumberOfDays)) < 0)
 				{
-					resultAuctionItems.Add(item);
+					resultAuctionItems.Add(new AuctionItemShow
+					{
+					    AuctionLink = item.AuctionLink,
+					    OnPage = item.OnPage,
+					    Content = item.Content,
+					});
 				}
 			}
 		}
 
-		private static IEnumerable<AuctionItem> Load(string name)
+		private static IEnumerable<T> Load<T>(string name)
 		{
 			if (File.Exists(name) == false)
-				return new List<AuctionItem>();
+				return new List<T>();
 
 			using (var r = new StreamReader(name))
 			{
 				var json = r.ReadToEnd();
-				return JsonConvert.DeserializeObject<List<AuctionItem>>(json);
+				return JsonConvert.DeserializeObject<List<T>>(json);
 			}
 		}
 
-		private static void Save(string name, List<AuctionItem> items, Formatting formatting = Formatting.Indented)
+		private static void Save<T>(string name, List<T> items, Formatting formatting = Formatting.Indented)
 		{
 			using (var w = File.CreateText(name))
 			{
