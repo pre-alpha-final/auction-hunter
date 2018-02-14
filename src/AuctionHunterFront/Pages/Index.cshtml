@@ -1,3 +1,27 @@
 ﻿@page
 @model IndexModel
 
+<h1>Latest search results</h1>
+
+@if (Model.HasDummyData)
+{
+	<ul>
+		@foreach (var dummy in Model.DummyData)
+		{
+			@for (var i = 0; i < 10; i++)
+			{
+				<li class="list-item">
+					<div class="thumbnail">
+						<img src="https://lh3.ggpht.com/0o7OHEVpGIkqBVL8ACxC9UZLFRXiUYnIMmVYO07DjlsyYHmSoV7OsVe1ALc-0jUHWw=h100" />
+						<p><strong>Item name</strong></p>
+						<p>@Html.DisplayFor(m => dummy.Timestamp)</p>
+					</div>
+				</li>
+			}
+		}
+	</ul>
+}
+else
+{
+	<p>No results returned</p>
+}
