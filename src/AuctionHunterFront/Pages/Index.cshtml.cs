@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace AuctionHunterFront.Pages
 {
@@ -9,14 +10,13 @@ namespace AuctionHunterFront.Pages
     {
 		public IList<AuctionItem> DummyData { get; set; } = new List<AuctionItem>
 		{
-			new AuctionItem { AuctionLink = "google.com", OnPage = 1, Content = @"{'prop1', 'value1'}", MarkedAsRead = false, Timestamp = DateTime.Now },
+			new AuctionItem { AuctionLink = "google.com", OnPage = 1, Content = JObject.Parse(@"{""name"": ""name1""}"), MarkedAsRead = false, Timestamp = DateTime.Now },
 		};
 
 		public bool HasDummyData => DummyData.Count > 0;
 
         public void OnGet()
         {
-
         }
     }
 }

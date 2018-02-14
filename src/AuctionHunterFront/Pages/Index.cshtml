@@ -13,7 +13,7 @@
 				<li class="list-item">
 					<div class="thumbnail">
 						<img src="https://lh3.ggpht.com/0o7OHEVpGIkqBVL8ACxC9UZLFRXiUYnIMmVYO07DjlsyYHmSoV7OsVe1ALc-0jUHWw=h100" />
-						<p><strong>Item name</strong></p>
+						<p><strong>@Html.Raw(dummy.Content.SelectToken("$.name"))</strong></p>
 						<p>@Html.DisplayFor(m => dummy.Timestamp)</p>
 					</div>
 				</li>
