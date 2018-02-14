@@ -5,21 +5,27 @@
 
 @if (Model.HasDummyData)
 {
-	<ul>
-		@foreach (var dummy in Model.DummyData)
-		{
-			@for (var i = 0; i < 10; i++)
+	<div class="row text-center">
+		<ul>
+			@foreach (var dummy in Model.DummyData)
 			{
-				<li class="list-item">
-					<div class="thumbnail">
-						<img src="https://lh3.ggpht.com/0o7OHEVpGIkqBVL8ACxC9UZLFRXiUYnIMmVYO07DjlsyYHmSoV7OsVe1ALc-0jUHWw=h100" />
-						<p><strong>@Html.Raw(dummy.Content.SelectToken("$.name"))</strong></p>
-						<p>@Html.DisplayFor(m => dummy.Timestamp)</p>
-					</div>
-				</li>
+				@for (var i = 0; i < 10; i++)
+				{
+					<li class="list-item">
+						<div class="thumbnail thumbnail-colors">
+							<img src="http://www.omgubuntu.co.uk/wp-content/uploads/2016/01/emoji.jpg" />
+							<p><strong>@Html.Raw(dummy.Content.SelectToken("$.name"))</strong></p>
+							<p>@Html.Raw($"Found on page: {dummy.OnPage}")</p>
+							<div class="row">
+								<a class="btn" href="https://google.com">Visit</a>
+								<a class="btn" href="https://google.com">Mark as read</a>
+							</div>
+						</div>
+					</li>
+				}
 			}
-		}
-	</ul>
+		</ul>
+	</div>
 }
 else
 {
