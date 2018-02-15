@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuctionHunter", "AuctionHunter\AuctionHunter.csproj", "{1BCB601C-4EBF-45CC-BC6F-D1F1EC372D35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionHunterFront", "AuctionHunterFront\AuctionHunterFront.csproj", "{D357D53F-4FA1-4D5A-9368-2BE6B513F05B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuctionHunterFront", "AuctionHunterFront\AuctionHunterFront.csproj", "{D357D53F-4FA1-4D5A-9368-2BE6B513F05B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
