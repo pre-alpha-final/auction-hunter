@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace AuctionHunterFront.Pages
 {
@@ -15,8 +16,9 @@ namespace AuctionHunterFront.Pages
 
 		public bool HasDummyData => DummyData.Count > 0;
 
-		public void OnGet()
+		public Task OnGetAsync()
 		{
+			return Task.CompletedTask;
 		}
 	}
 }

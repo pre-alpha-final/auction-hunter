@@ -1,0 +1,41 @@
+﻿@page "{MaxPage:int?}"
+@model AuctionHunterFront.Pages.Update.IndexModel
+
+<h1>Updating</h1>
+
+<ul id="updatelist" class="list-group" style="margin-top: 30px"></ul>
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	<script type="text/javascript" language="JavaScript">
+		$(document).ready(
+			function () {
+				continuousPull(1);
+			}
+		);
+
+		function continuousPull(pageNumber) {
+			$.ajax({
+				type: "GET",
+				url: "/Update/Run?handler=ContinuousPull&pageNumber=" + pageNumber + "&maxPage=" + @Model.MaxPage,
+				contentType: "text/html; charset=utf-8",
+				dataType: "html",
+				success: function (response) {
+					if ($("#updatelist li").length > 10) {
+						$("#updatelist li").first().remove();
+					}
+					$("#updatelist").append(response);
+
+					if (pageNumber >= @Model.MaxPage){
+						window.location.replace("http://google.com");
+					}
+					else{
+						continuousPull(++pageNumber);
+					}
+				},
+				failure: function (response) {
+				}
+			});
+		}
+	</script>
+}
