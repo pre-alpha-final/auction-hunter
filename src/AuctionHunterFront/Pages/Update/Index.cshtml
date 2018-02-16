@@ -3,6 +3,12 @@
 
 <h1>Updating</h1>
 
+<div class="progress">
+	<div id="updateProgress" class="progress-bar progress-bar-striped active" role="progressbar"
+		 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+	</div>
+</div>
+
 <ul id="updatelist" class="list-group" style="margin-top: 30px"></ul>
 
 @section Scripts {
@@ -22,10 +28,16 @@
 				contentType: "text/html; charset=utf-8",
 				dataType: "html",
 				success: function (response) {
+					updateProgress(100 * pageNumber / @Model.MaxPage);
 					updatePage(response);
 					moveNext(pageNumber, @Model.MaxPage);
 				}
 			});
+		}
+
+		function updateProgress(width) {
+			$('#updateProgress').css('width', width + '%');
+			$('#updateProgress').html(width.toFixed(0) + '%');
 		}
 
 		function updatePage(response) {
