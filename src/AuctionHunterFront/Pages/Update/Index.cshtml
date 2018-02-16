@@ -8,6 +8,7 @@
 @section Scripts {
 	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 	<script type="text/javascript" language="JavaScript">
+
 		$(document).ready(
 			function () {
 				continuousPull(1);
@@ -21,21 +22,27 @@
 				contentType: "text/html; charset=utf-8",
 				dataType: "html",
 				success: function (response) {
-					if ($("#updatelist li").length > 10) {
-						$("#updatelist li").first().remove();
-					}
-					$("#updatelist").append(response);
-
-					if (pageNumber >= @Model.MaxPage){
-						window.location.replace("http://google.com");
-					}
-					else{
-						continuousPull(++pageNumber);
-					}
-				},
-				failure: function (response) {
+					updatePage(response);
+					moveNext(pageNumber, @Model.MaxPage);
 				}
 			});
 		}
+
+		function updatePage(response) {
+			if ($("#updatelist li").length > 10) {
+				$("#updatelist li").first().remove();
+			}
+			$("#updatelist").append(response);
+		}
+
+		function moveNext(pageNumber, maxPage) {
+			if (pageNumber >= maxPage){
+				window.location.replace("http://google.com");
+			}
+			else{
+				continuousPull(++pageNumber);
+			}
+		}
+
 	</script>
 }
