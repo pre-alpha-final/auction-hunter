@@ -1,10 +1,12 @@
 ﻿using AuctionHunterFront.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 
 namespace AuctionHunterFront.Pages.Update
 {
+	[Authorize]
 	public class RunModel : PageModel
     {
 		private readonly AuctionHunterDbContext _auctionHunterDbContext;

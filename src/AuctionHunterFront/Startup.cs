@@ -1,6 +1,7 @@
 using AuctionHunterFront.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,15 @@ namespace AuctionHunterFront
 		{
 			services.AddDbContext<AuctionHunterDbContext>(options =>
 				options.UseMySql(Configuration.GetConnectionString("AuctionHunterDbContext")));
+
+			services.AddIdentity<ApplicationUser, IdentityRole>()
+				.AddEntityFrameworkStores<AuctionHunterDbContext>();
+
+			services.ConfigureApplicationCookie(options =>
+			{
+				options.LoginPath = "/Auth/Login";
+			});
+
 			services.AddMvc();
 		}
 
@@ -38,6 +48,8 @@ namespace AuctionHunterFront
 			}
 
 			app.UseStaticFiles();
+
+			app.UseAuthentication();
 
 			app.UseMvc(routes =>
 			{

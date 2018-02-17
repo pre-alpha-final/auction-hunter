@@ -5,6 +5,11 @@
 
 @if (Model.HasDummyData)
 {
+	<div class="row">
+		<div class="pull-right">
+			<a href="/Auth/Logout" class="btn">Log out</a>
+		</div>
+	</div>
 	<div class="row text-center">
 		<ul>
 			@foreach (var dummy in Model.DummyData)

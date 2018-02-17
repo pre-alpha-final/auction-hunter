@@ -1,10 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AuctionHunterFront.Pages.Update
 {
+	[Authorize]
 	public class IndexModel : PageModel
 	{
 		[BindProperty(SupportsGet = true)]

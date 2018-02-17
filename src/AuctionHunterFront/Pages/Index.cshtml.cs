@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AuctionHunterFront.Pages
 {
+	[Authorize]
 	public class IndexModel : PageModel
 	{
 		public IList<AuctionItem> DummyData { get; set; } = new List<AuctionItem>
