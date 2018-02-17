@@ -10,8 +10,8 @@ using System;
 
 namespace AuctionHunterFront.Migrations
 {
-    [DbContext(typeof(AuctionHunterContext))]
-    [Migration("20180217020335_Initial")]
+    [DbContext(typeof(AuctionHunterDbContext))]
+    [Migration("20180217023448_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

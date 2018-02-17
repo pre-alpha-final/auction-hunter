@@ -14,6 +14,11 @@ namespace AuctionHunterFront.Pages.Update
 
 		public string Text { get; set; }
 
+		public RunModel()
+		{
+			
+		}
+
 		public async Task<IActionResult> OnGetContinuousPullAsync()
 		{
 			await Task.Delay(100);

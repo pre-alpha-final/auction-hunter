@@ -2,9 +2,9 @@
 
 namespace AuctionHunterFront.Models
 {
-	public class AuctionHunterContext : DbContext
+	public class AuctionHunterDbContext : DbContext
 	{
-		public AuctionHunterContext(DbContextOptions<AuctionHunterContext> options)
+		public AuctionHunterDbContext(DbContextOptions<AuctionHunterDbContext> options)
 		: base(options)
 		{
 		}

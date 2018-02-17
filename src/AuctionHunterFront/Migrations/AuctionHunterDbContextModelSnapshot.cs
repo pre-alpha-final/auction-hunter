@@ -10,8 +10,8 @@ using System;
 
 namespace AuctionHunterFront.Migrations
 {
-    [DbContext(typeof(AuctionHunterContext))]
-    partial class AuctionHunterContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(AuctionHunterDbContext))]
+    partial class AuctionHunterDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
