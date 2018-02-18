@@ -20,9 +20,6 @@ namespace AuctionHunter
 
 			var auctionHunterCoreBuilder = new AuctionHunterCoreBuilder();
 			var auctionHunter = auctionHunterCoreBuilder
-				.SetName("G2A")
-				.SetNumberOfPages(100)
-				.SetNumberOfDays(30)
 				.SetBaseUrl("https://www.g2a.com/new/api/products/filter?category_id=games&changeType=PAGINATION&currency=PLN&min_price[max]=100&min_price[min]=0&page=&platform=1&store=polish")
 				.SetUrlProvider(Container.GetService<IUrlProvider>())
 				.SetWebClient(Container.GetService<IWebClient>())
@@ -33,7 +30,12 @@ namespace AuctionHunter
 				.AddSkipPattern("Random Steam Key")
 				.AddSkipPattern("Steam Gift Card")
 				.Build();
-			await auctionHunter.Run();
+
+			for (int i = 1; i < 5; i++)
+			{
+				var page = await auctionHunter.GetPage(i);
+				Console.Write(page.DebugInfo);
+			}
 
 			Console.WriteLine("\nDone");
 			Console.ReadKey(true);

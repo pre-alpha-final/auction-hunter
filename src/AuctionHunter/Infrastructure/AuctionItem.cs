@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 
 namespace AuctionHunter.Infrastructure
 {
@@ -7,8 +6,7 @@ namespace AuctionHunter.Infrastructure
 	{
 		public string AuctionLink { get; set; }
 		public int OnPage { get; set; }
-		public JToken Content { get; set; }
-		public bool MarkedAsRead { get; set; }
 		public DateTime Timestamp { get; set; }
+		public string ContentJson { get; set; }
 	}
 }
