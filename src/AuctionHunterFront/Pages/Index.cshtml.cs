@@ -13,7 +13,7 @@ namespace AuctionHunterFront.Pages
 	{
 		public IList<AuctionItem> DummyData { get; set; } = new List<AuctionItem>
 		{
-			new AuctionItem { AuctionLink = "google.com", OnPage = 1, Content = JObject.Parse(@"{""name"": ""Some item name""}"), MarkedAsRead = false, Timestamp = DateTime.Now },
+			new AuctionItem { AuctionLink = "google.com", OnPage = 1, ContentJson = @"{""name"": ""Some item name""}", Timestamp = DateTime.Now },
 		};
 
 		public bool HasDummyData => DummyData.Count > 0;
@@ -21,6 +21,11 @@ namespace AuctionHunterFront.Pages
 		public Task OnGetAsync()
 		{
 			return Task.CompletedTask;
+		}
+
+		public JToken JsonParse(string json)
+		{
+			return JObject.Parse(json);
 		}
 	}
 }

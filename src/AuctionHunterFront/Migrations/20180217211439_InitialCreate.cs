@@ -54,7 +54,7 @@ namespace AuctionHunterFront.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    AdditionalDataJson = table.Column<string>(nullable: true),
+					AdditionalDataJson = table.Column<string>(nullable: true),
                     AuctionLink = table.Column<string>(nullable: true),
                     MarkedAsRead = table.Column<bool>(nullable: false),
                     OnPage = table.Column<int>(nullable: false),

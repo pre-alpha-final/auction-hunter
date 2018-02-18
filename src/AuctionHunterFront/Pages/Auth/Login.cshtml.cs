@@ -30,6 +30,7 @@ namespace AuctionHunterFront.Pages.Auth
 		public Task OnGetAsync()
         {
 			// Dummy user
+			//_userManager.PasswordValidators.Clear();
 			//var result = await _userManager.CreateAsync(new ApplicationUser { UserName = "username" }, "password");
 
 			return Task.CompletedTask;
