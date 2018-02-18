@@ -4,13 +4,11 @@ namespace AuctionHunter.G2A.Implementation
 {
 	public class G2AUrlProvider : IUrlProvider
 	{
-		private int _page = 1;
-
 		public string BaseUrl { get; set; }
 
-		public string GetNextUrl()
+		public string GetUrlForPage(int pageNumber)
 		{
-			return BaseUrl.Replace("page=", $"page={_page++}");
+			return BaseUrl.Replace("page=", $"page={pageNumber}");
 		}
 	}
 }

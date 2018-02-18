@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using AuctionHunter.Results;
+using System.Threading.Tasks;
 
 namespace AuctionHunter.Infrastructure
 {
 	public interface IWebClient
 	{
-		Task<string> Get(string url);
+		Task<WebClientResult> Get(string url);
 	}
 }

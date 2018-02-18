@@ -3,6 +3,6 @@
 	public interface IUrlProvider
 	{
 		string BaseUrl { get; set; }
-		string GetNextUrl();
+		string GetUrlForPage(int pageNumber);
 	}
 }
