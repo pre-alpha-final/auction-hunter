@@ -11,9 +11,10 @@ using System;
 namespace AuctionHunterFront.Migrations
 {
     [DbContext(typeof(AuctionHunterDbContext))]
-    partial class AuctionHunterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180219114624_Fixing index")]
+    partial class Fixingindex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

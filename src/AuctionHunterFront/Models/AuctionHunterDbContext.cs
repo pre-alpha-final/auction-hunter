@@ -11,5 +11,14 @@ namespace AuctionHunterFront.Models
 		}
 
 		public DbSet<AuctionHunterItem> AuctionHunterItems { get; set; }
+
+		protected override void OnModelCreating(ModelBuilder builder)
+		{
+			base.OnModelCreating(builder);
+
+			builder.Entity<AuctionHunterItem>()
+				.HasIndex(u => u.AuctionLink)
+				.IsUnique();
+		}
 	}
 }

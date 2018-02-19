@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AuctionHunterFront.Models
 {
@@ -8,7 +7,6 @@ namespace AuctionHunterFront.Models
 	{
 		public int Id { get; set; }
 
-		[Index(IsUnique = true)]
 		[StringLength(250)]
 		[Required]
 		public string AuctionLink { get; set; }
