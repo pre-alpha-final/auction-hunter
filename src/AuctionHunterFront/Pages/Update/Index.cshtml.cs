@@ -16,12 +16,9 @@ namespace AuctionHunterFront.Pages.Update
 
 		public Task<IActionResult> OnGetAsync()
 		{
-			if (MaxPage == null)
-			{
-				return Task.FromResult((IActionResult)RedirectPermanent("/Update/1"));
-			}
-
-			return Task.FromResult((IActionResult)Page());
+			return MaxPage == null
+				? Task.FromResult((IActionResult)RedirectPermanent("/Update/1"))
+				: Task.FromResult((IActionResult)Page());
 		}
 	}
 }

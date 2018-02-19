@@ -8,7 +8,7 @@ namespace AuctionHunterFront.Pages.Update
 {
 	[Authorize]
 	public class RunModel : PageModel
-    {
+	{
 		private readonly AuctionHunterDbContext _auctionHunterDbContext;
 
 		[BindProperty(SupportsGet = true)]
