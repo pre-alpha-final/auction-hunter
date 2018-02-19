@@ -11,9 +11,10 @@ using System;
 namespace AuctionHunterFront.Migrations
 {
     [DbContext(typeof(AuctionHunterDbContext))]
-    partial class AuctionHunterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180219095851_Adding field attributes")]
+    partial class Addingfieldattributes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
