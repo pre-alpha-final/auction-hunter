@@ -1,0 +1,67 @@
+﻿@page "{PageNumber:int?}"
+@model IndexModel
+
+<h1>Latest search results</h1>
+
+<div class="row">
+	<form method="post">
+		<div class="pull-right">
+			@if (Model.ShowAll)
+			{
+				<a class="btn button-spacing" asp-route-showall="False" asp-route-pagenumber="1">Show new</a>
+			}
+			else
+			{
+				<a class="btn button-spacing" asp-route-showall="True">Show all</a>
+			}
+			@if (Model.HasAuctionHunterItems)
+			{
+				<button class="btn button-spacing" asp-page-handler="MarkAllAsRead" asp-route-showall="@Model.ShowAll">Mark all as read</button>
+			}
+		</div>
+	</form>
+</div>
+
+@if (Model.HasAuctionHunterItems)
+{
+	<div class="row text-center">
+		<ul>
+			@foreach (var auctionHunterItem in Model.AuctionHunterItems)
+			{
+				<li class="list-item">
+					<div class="thumbnail">
+						<img class="image" src="@Html.Raw(Model.JsonParse(auctionHunterItem.ContentJson).SelectToken("$.image"))" />
+						<div class="title"><p><strong>@Html.Raw(Model.JsonParse(auctionHunterItem.ContentJson).SelectToken("$.name"))</strong></p></div>
+						<div class="price"><b>@Html.Raw(Model.JsonParse(auctionHunterItem.ContentJson).SelectToken("$.price"))</b></div>
+						<p>@Html.Raw($"Found on page: {auctionHunterItem.OnPage}")</p>
+						<form method="post">
+							<div class="row">
+								<a class="btn button-spacing" href="@Html.Raw(auctionHunterItem.AuctionLink)">Visit</a>
+								<button class="btn button-spacing" asp-page-handler="MarkAsRead" asp-route-id="@auctionHunterItem.Id" asp-route-showall="@Model.ShowAll">Mark as read</button>
+							</div>
+						</form>
+					</div>
+				</li>
+			}
+		</ul>
+	</div>
+}
+else
+{
+	<p>No results returned</p>
+}
+
+<br />
+<div class="row">
+	<div class="text-center">
+		@if (Model.HasAuctionHunterItems && Model.PageNumber > 1)
+		{
+			<a class="btn button-spacing" asp-route-pagenumber=@($"{Model.PageNumber - 1}") asp-route-showall="@Model.ShowAll">Previous</a>
+		}
+		@if (Model.HasAuctionHunterItems && Model.ItemCount > (Model.PageNumber) * Model.ItemsPerPage)
+		{
+			<a class="btn button-spacing" asp-route-pagenumber=@($"{Model.PageNumber + 1}") asp-route-showall="@Model.ShowAll">Next</a>
+		}
+	</div>
+</div>
+<br />

@@ -41,23 +41,16 @@ namespace AuctionHunter.Infrastructure.Implementation
 			return pageResult;
 		}
 
-		private IList<AuctionItem> GetAuctionItems(IList<string> items)
+		private IList<AuctionItem> GetAuctionItems(IEnumerable<string> items)
 		{
-			var auctionItems = new List<AuctionItem>();
-			foreach (var item in items)
-			{
-				var auctionItem = new AuctionItem
+			return items.Select(item => new AuctionItem
 				{
 					AuctionLink = AuctionLinkExtractor.Extract(item),
 					ContentJson = ContentExtractor.Extract(item).ToString(),
 					Timestamp = DateTime.UtcNow,
-				};
-				if (SkipPatterns.Any(e => auctionItem.ContentJson.Contains(e)))
-					continue;
-				auctionItems.Add(auctionItem);
-			}
-
-			return auctionItems;
+				})
+				.Where(auctionItem => !SkipPatterns.Any(e => auctionItem.ContentJson.Contains(e)))
+				.ToList();
 		}
 	}
 }

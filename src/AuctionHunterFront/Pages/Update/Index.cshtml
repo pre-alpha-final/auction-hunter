@@ -1,0 +1,61 @@
+﻿@page "{MaxPage:int?}"
+@model Update.IndexModel
+
+<h1>Updating</h1>
+
+<div class="progress">
+	<div id="updateProgress" class="progress-bar progress-bar-striped active" role="progressbar"
+		 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+	</div>
+</div>
+
+<ul id="updatelist" class="list-group" style="margin-top: 30px"></ul>
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	<script type="text/javascript" language="JavaScript">
+
+		$(document).ready(
+			function () {
+				continuousPull(1);
+			}
+		);
+
+		function continuousPull(pageNumber) {
+			$.ajax({
+				type: "GET",
+				url: "/Update/Run?handler=ContinuousPull&pageNumber=" + pageNumber + "&maxPage=" + @Model.MaxPage,
+				contentType: "text/html; charset=utf-8",
+				dataType: "html",
+				success: function (response) {
+					updateProgress(100 * pageNumber / @Model.MaxPage);
+					updatePage(response);
+					moveNext(pageNumber, @Model.MaxPage);
+				}
+			});
+		}
+
+		function updateProgress(width) {
+			$('#updateProgress').css('width', width + '%');
+			$('#updateProgress').html(width.toFixed(0) + '%');
+		}
+
+		function updatePage(response) {
+			if ($("#updatelist li").length >= 5) {
+				$("#updatelist li").first().remove();
+			}
+			$("#updatelist").append(response);
+		}
+
+		function moveNext(pageNumber, maxPage) {
+			if (pageNumber >= maxPage) {
+				setTimeout(function() {
+					window.location.replace("/");
+				}, 1000);
+			} else{
+				continuousPull(++pageNumber);
+			}
+		}
+
+	</script>
+}

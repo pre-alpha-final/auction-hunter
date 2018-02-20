@@ -10,7 +10,8 @@ namespace AuctionHunter.G2A.Implementation
 			var token = JObject.Parse(item);
 			return new JObject(
 				new JProperty("name", token.SelectToken("$.name")),
-				new JProperty("price", $"{token.SelectToken("$.minPrice")} {token.SelectToken("$.currency")}"));
+				new JProperty("price", $"{token.SelectToken("$.minPrice")} {token.SelectToken("$.currency")}"),
+				new JProperty("image", token.SelectToken("$.banner.medium")));
 		}
 	}
 }
