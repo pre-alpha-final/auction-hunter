@@ -1,26 +1,29 @@
-﻿using AuctionHunter.Infrastructure;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using AuctionHunterFront.Models;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuctionHunterFront.Pages
 {
 	[Authorize]
 	public class IndexModel : PageModel
 	{
-		public IList<AuctionItem> DummyData { get; set; } = new List<AuctionItem>
-		{
-			new AuctionItem { AuctionLink = "google.com", OnPage = 1, ContentJson = @"{""name"": ""Some item name""}", Timestamp = DateTime.Now },
-		};
+		private readonly AuctionHunterDbContext _auctionHunterDbContext;
 
-		public bool HasDummyData => DummyData.Count > 0;
+		public IList<AuctionHunterItem> AuctionHunterItems { get; set; }
+		public bool HasAuctionHunterItems => AuctionHunterItems?.Count > 0;
 
-		public Task OnGetAsync()
+		public IndexModel(AuctionHunterDbContext auctionHunterDbContext)
 		{
-			return Task.CompletedTask;
+			_auctionHunterDbContext = auctionHunterDbContext;
+		}
+
+		public async Task OnGetAsync()
+		{
+			AuctionHunterItems = await _auctionHunterDbContext.AuctionHunterItems.ToListAsync();
 		}
 
 		public JToken JsonParse(string json)

@@ -41,7 +41,7 @@ namespace AuctionHunter
 			Console.ReadKey(true);
 		}
 
-		private static void RegisterServices()
+		public static void RegisterServices()
 		{
 			var services = new ServiceCollection();
 			services.AddTransient<IWebClient, DefaultWebClient>();

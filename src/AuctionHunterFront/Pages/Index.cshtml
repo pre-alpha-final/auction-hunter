@@ -3,26 +3,23 @@
 
 <h1>Latest search results</h1>
 
-@if (Model.HasDummyData)
+@if (Model.HasAuctionHunterItems)
 {
 	<div class="row text-center">
 		<ul>
-			@foreach (var dummy in Model.DummyData)
+			@foreach (var auctionHunterItem in Model.AuctionHunterItems)
 			{
-				@for (var i = 0; i < 10; i++)
-				{
-					<li class="list-item">
-						<div class="thumbnail thumbnail-colors">
-							<img src="http://www.omgubuntu.co.uk/wp-content/uploads/2016/01/emoji.jpg" />
-							<p><strong>@Html.Raw(@Model.JsonParse(dummy.ContentJson).SelectToken("$.name"))</strong></p>
-							<p>@Html.Raw($"Found on page: {dummy.OnPage}")</p>
-							<div class="row">
-								<a class="btn" href="https://google.com">Visit</a>
-								<a class="btn" href="https://google.com">Mark as read</a>
-							</div>
+				<li class="list-item">
+					<div class="thumbnail thumbnail-colors">
+						<img src="@Html.Raw(@Model.JsonParse(auctionHunterItem.ContentJson).SelectToken("$.image"))" />
+						<div style="height: 100px"><p><strong>@Html.Raw(@Model.JsonParse(auctionHunterItem.ContentJson).SelectToken("$.name"))</strong></p></div>
+						<p>@Html.Raw($"Found on page: {auctionHunterItem.OnPage}")</p>
+						<div class="row">
+							<a class="btn" href="@Html.Raw(auctionHunterItem.AuctionLink)">Visit</a>
+							<a class="btn" href="https://google.com">Mark as read</a>
 						</div>
-					</li>
-				}
+					</div>
+				</li>
 			}
 		</ul>
 	</div>

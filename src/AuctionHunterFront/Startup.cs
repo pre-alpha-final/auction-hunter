@@ -1,4 +1,6 @@
 using AuctionHunterFront.Models;
+using AuctionHunterFront.Services;
+using AuctionHunterFront.Services.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -30,6 +32,8 @@ namespace AuctionHunterFront
 			{
 				options.LoginPath = "/Auth/Login";
 			});
+
+			services.AddSingleton<IAuctionHunterService, G2AAuctionHunterService>();
 
 			services.AddMvc();
 		}
