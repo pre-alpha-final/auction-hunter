@@ -1,3 +1,4 @@
+using AuctionHunter;
 using AuctionHunterFront.Models;
 using AuctionHunterFront.Services;
 using AuctionHunterFront.Services.Implementation;
@@ -50,6 +51,8 @@ namespace AuctionHunterFront
 			{
 				app.UseExceptionHandler("/Error");
 			}
+
+			AHInitializer.Init();
 
 			app.UseStaticFiles();
 

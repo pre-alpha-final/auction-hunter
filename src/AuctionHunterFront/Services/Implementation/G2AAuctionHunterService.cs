@@ -12,7 +12,6 @@ namespace AuctionHunterFront.Services.Implementation
 
 		public G2AAuctionHunterService()
 		{
-			G2ADefaults.Initialize();
 			auctionHunterCore = new AuctionHunterCoreBuilder()
 				.SetBaseUrl(G2ADefaults.DefaultBaseUrl)
 				.SetUrlProvider(G2ADefaults.DefaultUrlProvider)
