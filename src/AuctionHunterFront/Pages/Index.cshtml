@@ -10,9 +10,10 @@
 			@foreach (var auctionHunterItem in Model.AuctionHunterItems)
 			{
 				<li class="list-item">
-					<div class="thumbnail thumbnail-colors">
-						<img src="@Html.Raw(@Model.JsonParse(auctionHunterItem.ContentJson).SelectToken("$.image"))" />
-						<div style="height: 100px"><p><strong>@Html.Raw(@Model.JsonParse(auctionHunterItem.ContentJson).SelectToken("$.name"))</strong></p></div>
+					<div class="thumbnail">
+						<img class="image" src="@Html.Raw(@Model.JsonParse(auctionHunterItem.ContentJson).SelectToken("$.image"))" />
+						<div class="title"><p><strong>@Html.Raw(@Model.JsonParse(auctionHunterItem.ContentJson).SelectToken("$.name"))</strong></p></div>
+						<div class="price"><b>@Html.Raw(@Model.JsonParse(auctionHunterItem.ContentJson).SelectToken("$.price"))</b></div>
 						<p>@Html.Raw($"Found on page: {auctionHunterItem.OnPage}")</p>
 						<div class="row">
 							<a class="btn" href="@Html.Raw(auctionHunterItem.AuctionLink)">Visit</a>

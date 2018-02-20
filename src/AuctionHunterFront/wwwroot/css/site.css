@@ -7,16 +7,27 @@
 
 ul {
 	list-style-type: none;
-	padding: 0px;
+	padding: 0;
 }
 
 .thumbnail p {
-	margin-top: 15px;
+	margin-top: 0;
 	color: #555;
 }
 
-.thumbnail p strong {
+.thumbnail .image {
+	height: 200px;
+}
+
+.thumbnail .title {
+	margin-top: 15px;
 	font-size: 22px;
+	height: 100px;
+}
+
+.thumbnail .price {
+	font-size: 20px;
+	color: #ff0044;
 }
 
 .btn {
