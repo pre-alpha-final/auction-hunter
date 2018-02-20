@@ -41,17 +41,18 @@
 		}
 
 		function updatePage(response) {
-			if ($("#updatelist li").length > 10) {
+			if ($("#updatelist li").length >= 5) {
 				$("#updatelist li").first().remove();
 			}
 			$("#updatelist").append(response);
 		}
 
 		function moveNext(pageNumber, maxPage) {
-			if (pageNumber >= maxPage){
-				window.location.replace("/");
-			}
-			else{
+			if (pageNumber >= maxPage) {
+				setTimeout(function() {
+					window.location.replace("/");
+				}, 1000);
+			} else{
 				continuousPull(++pageNumber);
 			}
 		}
