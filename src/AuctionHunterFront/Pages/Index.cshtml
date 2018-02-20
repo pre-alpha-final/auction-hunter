@@ -4,11 +4,13 @@
 <h1>Latest search results</h1>
 
 <div class="row">
-	<div class="pull-right">
-		<a href="/Auth/Logout" class="btn button-spacing">Show all</a>
-		<a href="/Auth/Logout" class="btn button-spacing">Show new</a>
-		<a href="/Auth/Logout" class="btn button-spacing">Mark all as read</a>
-	</div>
+	<form method="post">
+		<div class="pull-right">
+			<a href="/Auth/Logout" class="btn button-spacing">Show all</a>
+			<a href="/Auth/Logout" class="btn button-spacing">Show new</a>
+			<button class="btn button-spacing" asp-page-handler="MarkAllAsRead">Mark all as read</button>
+		</div>
+	</form>
 </div>
 
 @if (Model.HasAuctionHunterItems)
@@ -23,10 +25,12 @@
 						<div class="title"><p><strong>@Html.Raw(@Model.JsonParse(auctionHunterItem.ContentJson).SelectToken("$.name"))</strong></p></div>
 						<div class="price"><b>@Html.Raw(@Model.JsonParse(auctionHunterItem.ContentJson).SelectToken("$.price"))</b></div>
 						<p>@Html.Raw($"Found on page: {auctionHunterItem.OnPage}")</p>
-						<div class="row">
-							<a class="btn button-spacing" href="@Html.Raw(auctionHunterItem.AuctionLink)">Visit</a>
-							<a class="btn button-spacing" href="https://google.com">Mark as read</a>
-						</div>
+						<form method="post">
+							<div class="row">
+								<a class="btn button-spacing" href="@Html.Raw(auctionHunterItem.AuctionLink)">Visit</a>
+								<button class="btn button-spacing" asp-page-handler="MarkAsRead" asp-route-id="@auctionHunterItem.Id">Mark as read</button>
+							</div>
+						</form>
 					</div>
 				</li>
 			}
@@ -45,7 +49,7 @@ else
 		{
 			<a href="@($"/{Model.PageNumber - 1}")" class="btn button-spacing">Previous</a>
 		}
-		@if (Model.ItemCount > (Model.PageNumber) * Model.ItemsPerPage)
+		@if (Model.HasAuctionHunterItems && Model.ItemCount > (Model.PageNumber) * Model.ItemsPerPage)
 		{
 			<a href="@($"/{Model.PageNumber + 1}")" class="btn button-spacing">Next</a>
 		}
