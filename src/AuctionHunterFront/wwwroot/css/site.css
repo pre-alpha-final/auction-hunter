@@ -84,6 +84,11 @@ ul {
 	border-color: transparent;
 }
 
+.button-spacing {
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
 @media screen and (max-width: 767px) {
 }
 
