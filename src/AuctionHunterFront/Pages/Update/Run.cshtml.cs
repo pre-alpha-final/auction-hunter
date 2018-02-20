@@ -32,10 +32,10 @@ namespace AuctionHunterFront.Pages.Update
 
 		public async Task<IActionResult> OnGetContinuousPullAsync()
 		{
-			var pageResult = await _auctionHunterService.GetItems((int)PageNumber);
+			var pageResult = await _auctionHunterService.GetItems(PageNumber ?? -1);
 			pageResult.AuctionItems.ToList().ForEach(async e => await TryAddAsync(e));
 			await _auctionHunterDbContext.SaveChangesAsync();
-			DebugInfo = pageResult.DebugInfo;
+			DebugInfo = pageResult.DebugInfo.Replace("\n", "<br />");
 
 			return Page();
 		}
@@ -44,6 +44,11 @@ namespace AuctionHunterFront.Pages.Update
 		{
 			try
 			{
+				var oldItem = _auctionHunterDbContext.AuctionHunterItems
+					.FirstOrDefault(e => e.AuctionLink == auctionItem.AuctionLink);
+				if (oldItem != null)
+					return;
+
 				await _auctionHunterDbContext.AuctionHunterItems.AddAsync(new AuctionHunterItem
 				{
 					AuctionLink = auctionItem.AuctionLink,
@@ -55,7 +60,7 @@ namespace AuctionHunterFront.Pages.Update
 			}
 			catch (Exception e)
 			{
-				// Ignore
+				// ignore
 			}
 		}
 	}

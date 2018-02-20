@@ -1,7 +1,7 @@
 ﻿@page
-@model AuctionHunterFront.Pages.Update.RunModel
+@model Update.RunModel
 @{ 
 	Layout = "";
 }
 
-<li class="list-group-item">@Model.DebugInfo</li>
+<li class="list-group-item">@Html.Raw(@Model.DebugInfo)</li>
