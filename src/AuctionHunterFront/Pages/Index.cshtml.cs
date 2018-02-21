@@ -36,7 +36,9 @@ namespace AuctionHunterFront.Pages
 		public async Task OnGetAsync()
 		{
 			PageNumber = PageNumber ?? 1;
-			ItemCount = await _auctionHunterDbContext.AuctionHunterItems.CountAsync();
+			ItemCount = await _auctionHunterDbContext.AuctionHunterItems
+				.Where(e => ShowAll ? true : e.MarkedAsRead == false)
+				.CountAsync();
 			AuctionHunterItems = await _auctionHunterDbContext.AuctionHunterItems
 				.Where(e => ShowAll ? true : e.MarkedAsRead == false)
 				.Skip(ItemsPerPage * ((int)PageNumber - 1))
