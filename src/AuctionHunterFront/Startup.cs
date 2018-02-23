@@ -23,8 +23,7 @@ namespace AuctionHunterFront
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddDbContext<AuctionHunterDbContext>(options =>
-				options.UseMySql(Configuration.GetConnectionString("AuctionHunterDbContext")));
+			services.AddDbContext<AuctionHunterDbContext>();
 
 			services.AddIdentity<ApplicationUser, IdentityRole>()
 				.AddEntityFrameworkStores<AuctionHunterDbContext>();
@@ -34,6 +33,7 @@ namespace AuctionHunterFront
 				options.LoginPath = "/Auth/Login";
 			});
 
+			services.AddSingleton<IConfiguration>(Configuration);
 			services.AddSingleton<IAuctionHunterService, G2AAuctionHunterService>();
 
 			services.AddMvc();
