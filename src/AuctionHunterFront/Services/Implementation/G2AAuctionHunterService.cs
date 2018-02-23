@@ -8,11 +8,11 @@ namespace AuctionHunterFront.Services.Implementation
 {
 	public class G2AAuctionHunterService : IAuctionHunterService
 	{
-		private IAuctionHunterCore auctionHunterCore;
+		private readonly IAuctionHunterCore _auctionHunterCore;
 
 		public G2AAuctionHunterService()
 		{
-			auctionHunterCore = new AuctionHunterCoreBuilder()
+			_auctionHunterCore = new AuctionHunterCoreBuilder()
 				.SetBaseUrl(G2ADefaults.DefaultBaseUrl)
 				.SetUrlProvider(G2ADefaults.DefaultUrlProvider)
 				.SetWebClient(G2ADefaults.DefaultWebCllient)
@@ -27,7 +27,7 @@ namespace AuctionHunterFront.Services.Implementation
 
 		public async Task<PageResult> GetItems(int pageNumber)
 		{
-			return await auctionHunterCore.GetPage(pageNumber);
+			return await _auctionHunterCore.GetPage(pageNumber);
 		}
 	}
 }
