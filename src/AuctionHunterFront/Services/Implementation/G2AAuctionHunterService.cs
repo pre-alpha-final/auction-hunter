@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Timers;
+using System.Threading;
 using AuctionHunter.G2A.Implementation;
 using AuctionHunter.Infrastructure;
 using AuctionHunter.Infrastructure.Builders;
@@ -15,7 +15,7 @@ namespace AuctionHunterFront.Services.Implementation
 	{
 		private readonly IConfiguration _configuration;
 		private readonly IAuctionHunterCore _auctionHunterCore;
-		private readonly Timer _aTimer = new Timer(2 * 60 * 60 * 1000);
+		private readonly Timer _aTimer;
 
 		public G2AAuctionHunterService(IConfiguration configuration)
 		{
@@ -33,15 +33,15 @@ namespace AuctionHunterFront.Services.Implementation
 				.AddSkipPattern("Steam Gift Card")
 				.Build();
 
-			_aTimer.Elapsed += OnTimerOnElapsed;
-			_aTimer.Start();
+			_aTimer = new Timer(OnTimerOnElapsed, null, TimeSpan.FromHours(3), TimeSpan.FromHours(3));
 		}
+
 		public async Task<PageResult> GetItems(int pageNumber)
 		{
 			return await _auctionHunterCore.GetPage(pageNumber);
 		}
 
-		private async void OnTimerOnElapsed(object s, ElapsedEventArgs e)
+		private async void OnTimerOnElapsed(object state)
 		{
 			for (var i = 1; i <= 100; i++)
 			{
