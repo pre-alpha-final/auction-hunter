@@ -1,16 +1,26 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace AuctionHunterFront.Models
 {
 	public class AuctionHunterDbContext : IdentityDbContext<ApplicationUser>
 	{
-		public AuctionHunterDbContext(DbContextOptions<AuctionHunterDbContext> options)
-		: base(options)
-		{
-		}
+		private readonly IConfiguration _configuration;
 
 		public DbSet<AuctionHunterItem> AuctionHunterItems { get; set; }
+
+		public AuctionHunterDbContext(IConfiguration configuration)
+		{
+			_configuration = configuration;
+		}
+
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		{
+			base.OnConfiguring(optionsBuilder);
+
+			optionsBuilder.UseMySql(_configuration.GetConnectionString("AuctionHunterDbContext"));
+		}
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{

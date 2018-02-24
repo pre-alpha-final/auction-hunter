@@ -52,8 +52,10 @@
 				setTimeout(function() {
 					window.location.replace("/");
 				}, 1000);
-			} else{
-				continuousPull(++pageNumber);
+			} else {
+				setTimeout(function () {
+					continuousPull(++pageNumber);
+				}, 100);
 			}
 		}
 
