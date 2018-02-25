@@ -33,7 +33,10 @@ namespace AuctionHunterFront.Pages.Update
 		public async Task<IActionResult> OnGetContinuousPullAsync()
 		{
 			var pageResult = await _auctionHunterService.GetItems(PageNumber ?? -1);
-			pageResult.AuctionItems.ToList().ForEach(async e => await TryAddAsync(e));
+			foreach (var auctionItem in pageResult.AuctionItems.ToList())
+			{
+				await TryAddAsync(auctionItem);
+			}
 			await _auctionHunterDbContext.SaveChangesAsync();
 			DebugInfo = pageResult.DebugInfo.Replace("\n", "<br />");
 

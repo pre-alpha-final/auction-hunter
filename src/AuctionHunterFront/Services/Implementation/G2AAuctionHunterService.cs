@@ -56,7 +56,7 @@ namespace AuctionHunterFront.Services.Implementation
 				}
 				await dbContext.SaveChangesAsync();
 			}
-			_currentPageNumber = _currentPageNumber % 100 + 1;
+			_currentPageNumber = _currentPageNumber % 150 + 1;
 		}
 
 		private static async Task TryAddAsync(AuctionHunterDbContext auctionHunterDbContext, AuctionItem auctionItem)
