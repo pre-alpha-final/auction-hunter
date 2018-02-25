@@ -16,6 +16,7 @@ namespace AuctionHunterFront.Services.Implementation
 		private readonly IConfiguration _configuration;
 		private readonly IAuctionHunterCore _auctionHunterCore;
 		private readonly Timer _aTimer;
+		private int _currentPageNumber = 1;
 
 		public G2AAuctionHunterService(IConfiguration configuration)
 		{
@@ -33,7 +34,7 @@ namespace AuctionHunterFront.Services.Implementation
 				.AddSkipPattern("Steam Gift Card")
 				.Build();
 
-			_aTimer = new Timer(OnTimerOnElapsed, null, TimeSpan.FromHours(3), TimeSpan.FromHours(3));
+			_aTimer = new Timer(OnTimerOnElapsed, null, TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10));
 		}
 
 		public async Task<PageResult> GetItems(int pageNumber)
@@ -43,18 +44,19 @@ namespace AuctionHunterFront.Services.Implementation
 
 		private async void OnTimerOnElapsed(object state)
 		{
-			for (var i = 1; i <= 100; i++)
+			// Azure sleep hack
+			await G2ADefaults.DefaultWebCllient.Get("https://auctionhunter.azurewebsites.net/");
+
+			var pageResult = await GetItems(_currentPageNumber);
+			using (var dbContext = new AuctionHunterDbContext(_configuration))
 			{
-				var pageResult = await GetItems(i);
-				using (var dbContext = new AuctionHunterDbContext(_configuration))
+				foreach (var auctionItem in pageResult.AuctionItems.ToList())
 				{
-					foreach (var auctionItem in pageResult.AuctionItems.ToList())
-					{
-						await TryAddAsync(dbContext, auctionItem);
-					}
-					await dbContext.SaveChangesAsync();
+					await TryAddAsync(dbContext, auctionItem);
 				}
+				await dbContext.SaveChangesAsync();
 			}
+			_currentPageNumber = _currentPageNumber % 100 + 1;
 		}
 
 		private static async Task TryAddAsync(AuctionHunterDbContext auctionHunterDbContext, AuctionItem auctionItem)
