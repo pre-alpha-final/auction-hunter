@@ -17,6 +17,7 @@ namespace AuctionHunterFront.Pages
 
 		public IList<AuctionHunterItem> AuctionHunterItems { get; set; }
 		public bool HasAuctionHunterItems => AuctionHunterItems?.Count > 0;
+		public string ItemIds => string.Join(",", AuctionHunterItems.Select(e => e.Id));
 
 		public int ItemsPerPage { get; set; } = 12;
 
@@ -48,26 +49,34 @@ namespace AuctionHunterFront.Pages
 
 		public async Task<IActionResult> OnPostMarkAsReadAsync(int id, bool showAll)
 		{
-			var update = new AuctionHunterItem { Id = id };
-			_auctionHunterDbContext.AuctionHunterItems.Attach(update);
-
-			update.MarkedAsRead = true;
-			await _auctionHunterDbContext.SaveChangesAsync();
+			await MarkAsReadAsync(id);
 
 			return RedirectToPage(new { showAll });
 		}
 
-		public async Task<IActionResult> OnPostMarkAllAsReadAsync(bool showAll)
+		public async Task<IActionResult> OnPostMarkAllAsReadAsync(string itemIds, bool showAll)
 		{
-			await _auctionHunterDbContext.Database
-				.ExecuteSqlCommandAsync("UPDATE AuctionHunterItems SET MarkedAsRead = true");
+			foreach (var id in itemIds.Split(',', System.StringSplitOptions.RemoveEmptyEntries))
+			{
+				await MarkAsReadAsync(int.Parse(id));
+			}
 
-			return RedirectToPage(new { showAll });
+			var pageNumber = 1;
+			return RedirectToPage(new { pageNumber, showAll });
 		}
 
 		public JToken JsonParse(string json)
 		{
 			return JObject.Parse(json);
+		}
+
+		private async Task MarkAsReadAsync(int id)
+		{
+			var update = new AuctionHunterItem { Id = id };
+			_auctionHunterDbContext.AuctionHunterItems.Attach(update);
+
+			update.MarkedAsRead = true;
+			await _auctionHunterDbContext.SaveChangesAsync();
 		}
 	}
 }

@@ -5,7 +5,10 @@
 
 <div class="row">
 	<form method="post">
+
 		<div class="pull-right">
+			@Html.HiddenFor(m => m.ItemIds)
+
 			@if (Model.ShowAll)
 			{
 				<a class="btn button-spacing" asp-route-showall="False" asp-route-pagenumber="1">Show new</a>
