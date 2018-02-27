@@ -17,7 +17,7 @@ namespace AuctionHunterFront.Extensions
 		public static string EmailConfirmationLink(this IUrlHelper urlHelper, string userId, string code, string scheme)
 		{
 			return urlHelper.Page(
-				"/Account/ConfirmEmail",
+				"/Auth/ConfirmEmail",
 				pageHandler: null,
 				values: new { userId, code },
 				protocol: scheme);
@@ -26,7 +26,7 @@ namespace AuctionHunterFront.Extensions
 		public static string ResetPasswordCallbackLink(this IUrlHelper urlHelper, string userId, string code, string scheme)
 		{
 			return urlHelper.Page(
-				"/Account/ResetPassword",
+				"/Auth/ResetPassword",
 				pageHandler: null,
 				values: new { userId, code },
 				protocol: scheme);
