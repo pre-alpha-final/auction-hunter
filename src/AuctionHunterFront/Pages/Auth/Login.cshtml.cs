@@ -12,8 +12,9 @@ namespace AuctionHunterFront.Pages.Auth
 		private readonly SignInManager<ApplicationUser> _signInManager;
 
 		[Required]
+		[EmailAddress]
 		[BindProperty]
-		public string Username { get; set; }
+		public string Email { get; set; }
 
 		[Required]
 		[DataType(DataType.Password)]
@@ -29,10 +30,6 @@ namespace AuctionHunterFront.Pages.Auth
 
 		public Task OnGetAsync()
 		{
-			// Dummy user
-			//_userManager.PasswordValidators.Clear();
-			//var result = await _userManager.CreateAsync(new ApplicationUser { UserName = "username" }, "password");
-
 			return Task.CompletedTask;
 		}
 
@@ -42,7 +39,7 @@ namespace AuctionHunterFront.Pages.Auth
 			if (!ModelState.IsValid)
 				return Page();
 
-			var result = await _signInManager.PasswordSignInAsync(Username, Password, false, false);
+			var result = await _signInManager.PasswordSignInAsync(Email, Password, false, false);
 			if (result.Succeeded)
 			{
 				return LocalRedirect(returnUrl);

@@ -1,0 +1,74 @@
+﻿using AuctionHunterFront.Models;
+using AuctionHunterFront.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
+
+namespace AuctionHunterFront.Pages.Auth
+{
+	public class RegisterModel : PageModel
+	{
+		private readonly UserManager<ApplicationUser> _userManager;
+		private readonly SignInManager<ApplicationUser> _signInManager;
+		private readonly IEmailSender _emailSender;
+
+		[Required]
+		[EmailAddress]
+		[BindProperty]
+		[Display(Name = "Email")]
+		public string Email { get; set; }
+
+		[Required]
+		[DataType(DataType.Password)]
+		[Display(Name = "Password")]
+		[BindProperty]
+		public string Password { get; set; }
+
+		[Required]
+		[DataType(DataType.Password)]
+		[Display(Name = "Confirm password")]
+		[Compare("Password", ErrorMessage = "The password and confirmation password do not match")]
+		[BindProperty]
+		public string ConfirmPassword { get; set; }
+
+		public RegisterModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailSender emailSender)
+		{
+			_userManager = userManager;
+			_signInManager = signInManager;
+			_emailSender = emailSender;
+		}
+
+		public Task OnGetAsync()
+		{
+			// Dummy user
+			//_userManager.PasswordValidators.Clear();
+			//var result = await _userManager.CreateAsync(new ApplicationUser { UserName = "username" }, "password");
+
+			return Task.FromResult(Page());
+		}
+
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+		{
+			if (ModelState.IsValid)
+			{
+				var user = new ApplicationUser { UserName = Email, Email = Email };
+				var result = await _userManager.CreateAsync(user, Password);
+				if (result.Succeeded)
+				{
+					await _signInManager.SignInAsync(user, false);
+					return LocalRedirect("/");
+				}
+				foreach (var error in result.Errors)
+				{
+					ModelState.AddModelError(string.Empty, error.Description);
+				}
+			}
+
+			ModelState.AddModelError(string.Empty, "Registration failed");
+			return Page();
+		}
+	}
+}

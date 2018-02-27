@@ -5,7 +5,6 @@ using AuctionHunterFront.Services.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -35,6 +34,7 @@ namespace AuctionHunterFront
 
 			services.AddSingleton<IConfiguration>(Configuration);
 			services.AddSingleton<IAuctionHunterService, G2AAuctionHunterService>();
+			services.AddSingleton<IEmailSender, EmailSender>();
 
 			services.AddMvc();
 		}

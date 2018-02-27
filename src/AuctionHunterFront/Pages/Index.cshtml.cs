@@ -47,6 +47,7 @@ namespace AuctionHunterFront.Pages
 				.ToListAsync();
 		}
 
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> OnPostMarkAsReadAsync(int id, bool showAll)
 		{
 			await MarkAsReadAsync(id);
@@ -54,6 +55,7 @@ namespace AuctionHunterFront.Pages
 			return RedirectToPage(new { showAll });
 		}
 
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> OnPostMarkAllAsReadAsync(string itemIds, bool showAll)
 		{
 			foreach (var id in itemIds.Split(',', System.StringSplitOptions.RemoveEmptyEntries))
