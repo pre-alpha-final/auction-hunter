@@ -9,5 +9,15 @@ namespace AuctionHunterFront.Services.Implementation
 		{
 			return Task.CompletedTask;
 		}
+
+		public Task SendEmailConfirmationAsync(object email, object callbackUrl)
+		{
+			return Task.CompletedTask;
+		}
+
+		public Task SendResetPasswordAsync(string email, object callbackUrl)
+		{
+			return Task.CompletedTask;
+		}
 	}
 }

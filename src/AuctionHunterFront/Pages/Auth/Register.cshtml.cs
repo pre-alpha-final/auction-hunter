@@ -1,4 +1,5 @@
-﻿using AuctionHunterFront.Models;
+﻿using AuctionHunterFront.Extensions;
+using AuctionHunterFront.Models;
 using AuctionHunterFront.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -58,6 +59,10 @@ namespace AuctionHunterFront.Pages.Auth
 				var result = await _userManager.CreateAsync(user, Password);
 				if (result.Succeeded)
 				{
+					var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+					var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+					await _emailSender.SendEmailConfirmationAsync(Email, callbackUrl);
+
 					await _signInManager.SignInAsync(user, false);
 					return LocalRedirect("/");
 				}
