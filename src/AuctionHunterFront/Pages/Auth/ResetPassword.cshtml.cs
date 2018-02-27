@@ -9,23 +9,23 @@ using System.Threading.Tasks;
 namespace AuctionHunterFront.Pages.Auth
 {
 	public class ResetPasswordModel : PageModel
-    {
+	{
 		private readonly UserManager<ApplicationUser> _userManager;
 
 		[Required]
 		[EmailAddress]
-        [BindProperty]
+		[BindProperty]
 		public string Email { get; set; }
 
 		[Required]
 		[DataType(DataType.Password)]
-        [BindProperty]
+		[BindProperty]
 		public string Password { get; set; }
 
 		[DataType(DataType.Password)]
 		[Display(Name = "Confirm password")]
 		[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        [BindProperty]
+		[BindProperty]
 		public string ConfirmPassword { get; set; }
 
 		public string Code { get; set; }

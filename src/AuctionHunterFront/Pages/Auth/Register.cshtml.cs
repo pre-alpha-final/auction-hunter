@@ -18,12 +18,10 @@ namespace AuctionHunterFront.Pages.Auth
 		[Required]
 		[EmailAddress]
 		[BindProperty]
-		[Display(Name = "Email")]
 		public string Email { get; set; }
 
 		[Required]
 		[DataType(DataType.Password)]
-		[Display(Name = "Password")]
 		[BindProperty]
 		public string Password { get; set; }
 

@@ -17,7 +17,7 @@ namespace AuctionHunterFront.Pages.Auth
 
 		[Required]
 		[EmailAddress]
-        [BindProperty]
+		[BindProperty]
 		public string Email { get; set; }
 
 		public ForgotPasswordModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailSender emailSender)

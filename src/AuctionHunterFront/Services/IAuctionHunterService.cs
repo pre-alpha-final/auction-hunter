@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace AuctionHunterFront.Services
 {
 	public interface IAuctionHunterService
-    {
-		Task<PageResult> GetItems(int pageNumber); 
-    }
+	{
+		Task<PageResult> GetItems(int pageNumber);
+	}
 }
