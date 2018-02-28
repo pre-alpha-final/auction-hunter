@@ -15,7 +15,7 @@ namespace AuctionHunterFront.Services.Implementation
 	{
 		private readonly IConfiguration _configuration;
 		private readonly IAuctionHunterCore _auctionHunterCore;
-		private readonly Timer _aTimer;
+		private Timer _aTimer;
 		private int _currentPageNumber = 1;
 
 		public G2AAuctionHunterService(IConfiguration configuration)
@@ -33,8 +33,14 @@ namespace AuctionHunterFront.Services.Implementation
 				.AddSkipPattern("Random Steam Key")
 				.AddSkipPattern("Steam Gift Card")
 				.Build();
+		}
 
-			_aTimer = new Timer(OnTimerOnElapsed, null, TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10));
+		public Task Start()
+		{
+			if (_aTimer == null)
+				_aTimer = new Timer(OnTimerOnElapsed, null, TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10));
+
+			return Task.CompletedTask;
 		}
 
 		public async Task<PageResult> GetItems(int pageNumber)
@@ -56,7 +62,7 @@ namespace AuctionHunterFront.Services.Implementation
 				}
 				await dbContext.SaveChangesAsync();
 			}
-			_currentPageNumber = _currentPageNumber % 150 + 1;
+			_currentPageNumber = _currentPageNumber % 100 + 1;
 		}
 
 		private static async Task TryAddAsync(AuctionHunterDbContext auctionHunterDbContext, AuctionItem auctionItem)

@@ -1,3 +1,5 @@
+﻿using System;
+using System.Linq;
 using AuctionHunter;
 using AuctionHunterFront.Models;
 using AuctionHunterFront.Services;
@@ -40,7 +42,7 @@ namespace AuctionHunterFront
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
 		{
 			if (env.IsDevelopment())
 			{
@@ -53,6 +55,7 @@ namespace AuctionHunterFront
 			}
 
 			AHInitializer.Init();
+			serviceProvider.GetService<IAuctionHunterService>().Start();
 
 			app.UseStaticFiles();
 
