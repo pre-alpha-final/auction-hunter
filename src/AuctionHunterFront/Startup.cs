@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using AuctionHunter;
 using AuctionHunterFront.Models;
 using AuctionHunterFront.Services;
@@ -7,6 +6,7 @@ using AuctionHunterFront.Services.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,12 +14,14 @@ namespace AuctionHunterFront
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
+		public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
 		{
 			Configuration = configuration;
+			Environment = hostingEnvironment;
 		}
 
 		public IConfiguration Configuration { get; }
+		public IHostingEnvironment Environment { get; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
@@ -27,7 +29,8 @@ namespace AuctionHunterFront
 			services.AddDbContext<AuctionHunterDbContext>();
 
 			services.AddIdentity<ApplicationUser, IdentityRole>()
-				.AddEntityFrameworkStores<AuctionHunterDbContext>();
+				.AddEntityFrameworkStores<AuctionHunterDbContext>()
+				.AddDefaultTokenProviders();
 
 			services.ConfigureApplicationCookie(options =>
 			{
@@ -39,6 +42,14 @@ namespace AuctionHunterFront
 			services.AddSingleton<IEmailSender, EmailSender>();
 
 			services.AddMvc();
+
+			services.Configure<MvcOptions>(options =>
+			{
+				if (Environment.IsProduction())
+				{
+					options.Filters.Add(new RequireHttpsAttribute());
+				}
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

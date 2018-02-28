@@ -28,6 +28,7 @@ namespace AuctionHunterFront.Pages.Auth
 		[BindProperty]
 		public string ConfirmPassword { get; set; }
 
+		[BindProperty]
 		public string Code { get; set; }
 
 		public ResetPasswordModel(UserManager<ApplicationUser> userManager)
