@@ -9,6 +9,7 @@ using AuctionHunter.Results;
 using AuctionHunterFront.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using AuctionHunterFront.Extensions;
 
 namespace AuctionHunterFront.Services.Implementation
 {
@@ -61,7 +62,7 @@ namespace AuctionHunterFront.Services.Implementation
 				{
 					await TryAddAsync(dbContext, auctionItem);
 				}
-				await dbContext.SaveChangesAsync();
+				await dbContext.SafeSaveChangesAsync();
 			}
 			_currentPageNumber = _currentPageNumber % 100 + 1;
 		}

@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using AuctionHunterFront.Extensions;
 
 namespace AuctionHunterFront.Pages.Update
 {
@@ -38,7 +39,7 @@ namespace AuctionHunterFront.Pages.Update
 			{
 				await TryAddAsync(auctionItem);
 			}
-			await _auctionHunterDbContext.SaveChangesAsync();
+			await _auctionHunterDbContext.SafeSaveChangesAsync();
 			DebugInfo = pageResult.DebugInfo.Replace("\n", "<br />");
 
 			return Page();

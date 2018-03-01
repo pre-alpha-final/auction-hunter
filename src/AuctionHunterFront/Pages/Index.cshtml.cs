@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
+using AuctionHunterFront.Extensions;
 
 namespace AuctionHunterFront.Pages
 {
@@ -89,7 +90,7 @@ namespace AuctionHunterFront.Pages
 			if (item != null)
 			{
 				_auctionHunterDbContext.ApplicationUserAuctionHunterItems.Remove(item);
-				await _auctionHunterDbContext.SaveChangesAsync();
+				await _auctionHunterDbContext.SafeSaveChangesAsync();
 			}
 		}
 	}
