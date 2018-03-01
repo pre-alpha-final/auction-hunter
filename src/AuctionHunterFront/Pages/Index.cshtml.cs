@@ -42,17 +42,30 @@ namespace AuctionHunterFront.Pages
 		{
 			var currentUser = await _userManager.GetUserAsync(HttpContext.User);
 			PageNumber = PageNumber ?? 1;
+			
+			if (ShowAll)
+			{
+				ItemCount = await _auctionHunterDbContext.AuctionHunterItems
+					.CountAsync();
 
-			ItemCount = await _auctionHunterDbContext.ApplicationUserAuctionHunterItems
-				.Where(e => ShowAll || e.ApplicationUser == currentUser)
-				.CountAsync();
+				AuctionHunterItems = await _auctionHunterDbContext.AuctionHunterItems
+					.Skip(ItemsPerPage * ((int)PageNumber - 1))
+					.Take(ItemsPerPage)
+					.ToListAsync();
+			}
+			else
+			{
+				ItemCount = await _auctionHunterDbContext.ApplicationUserAuctionHunterItems
+					.Where(e => e.ApplicationUser == currentUser)
+					.CountAsync();
 
-			AuctionHunterItems = await _auctionHunterDbContext.ApplicationUserAuctionHunterItems
-				.Where(e => ShowAll || e.ApplicationUser == currentUser)
-				.Select(e => e.AuctionHunterItem)
-				.Skip(ItemsPerPage * ((int)PageNumber - 1))
-				.Take(ItemsPerPage)
-				.ToListAsync();
+				AuctionHunterItems = await _auctionHunterDbContext.ApplicationUserAuctionHunterItems
+					.Where(e => e.ApplicationUser == currentUser)
+					.Select(e => e.AuctionHunterItem)
+					.Skip(ItemsPerPage * ((int)PageNumber - 1))
+					.Take(ItemsPerPage)
+					.ToListAsync();
+			}
 		}
 
 		[ValidateAntiForgeryToken]
