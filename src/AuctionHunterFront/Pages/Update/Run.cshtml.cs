@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuctionHunterFront.Pages.Update
 {
@@ -52,14 +53,23 @@ namespace AuctionHunterFront.Pages.Update
 				if (oldItem != null)
 					return;
 
-				await _auctionHunterDbContext.AuctionHunterItems.AddAsync(new AuctionHunterItem
+				var item = await _auctionHunterDbContext.AuctionHunterItems.AddAsync(new AuctionHunterItem
 				{
 					AuctionLink = auctionItem.AuctionLink,
 					OnPage = auctionItem.OnPage,
-					MarkedAsRead = false,
 					Timestamp = auctionItem.Timestamp,
 					ContentJson = auctionItem.ContentJson,
 				});
+
+				var users = await _auctionHunterDbContext.Users.ToListAsync();
+				foreach (var user in users)
+				{
+					await _auctionHunterDbContext.ApplicationUserAuctionHunterItems.AddAsync(new ApplicationUserAuctionHunterItem
+					{
+						ApplicationUser = user,
+						AuctionHunterItem = item.Entity,
+					});
+				}
 			}
 			catch (Exception e)
 			{

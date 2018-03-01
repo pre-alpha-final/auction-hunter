@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AuctionHunterFront.Models
@@ -15,11 +16,15 @@ namespace AuctionHunterFront.Models
 		public int OnPage { get; set; }
 
 		[Required]
-		public bool MarkedAsRead { get; set; }
-
-		[Required]
 		public DateTime Timestamp { get; set; }
 
 		public string ContentJson { get; set; }
+
+		public virtual ICollection<ApplicationUserAuctionHunterItem> ApplicationUserAuctionHunterItems { get; set; }
+
+		public AuctionHunterItem()
+		{
+			ApplicationUserAuctionHunterItems = new HashSet<ApplicationUserAuctionHunterItem>();
+		}
 	}
 }

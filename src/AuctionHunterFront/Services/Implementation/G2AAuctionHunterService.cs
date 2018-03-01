@@ -7,6 +7,7 @@ using AuctionHunter.Infrastructure;
 using AuctionHunter.Infrastructure.Builders;
 using AuctionHunter.Results;
 using AuctionHunterFront.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace AuctionHunterFront.Services.Implementation
@@ -38,7 +39,7 @@ namespace AuctionHunterFront.Services.Implementation
 		public Task Start()
 		{
 			if (_aTimer == null)
-				_aTimer = new Timer(OnTimerOnElapsed, null, TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10));
+				_aTimer = new Timer(OnTimerOnElapsed, null, TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(10));
 
 			return Task.CompletedTask;
 		}
@@ -74,14 +75,23 @@ namespace AuctionHunterFront.Services.Implementation
 				if (oldItem != null)
 					return;
 
-				await auctionHunterDbContext.AuctionHunterItems.AddAsync(new AuctionHunterItem
+				var item = await auctionHunterDbContext.AuctionHunterItems.AddAsync(new AuctionHunterItem
 				{
 					AuctionLink = auctionItem.AuctionLink,
 					OnPage = auctionItem.OnPage,
-					MarkedAsRead = false,
 					Timestamp = auctionItem.Timestamp,
 					ContentJson = auctionItem.ContentJson,
 				});
+
+				var users = await auctionHunterDbContext.Users.ToListAsync();
+				foreach (var user in users)
+				{
+					await auctionHunterDbContext.ApplicationUserAuctionHunterItems.AddAsync(new ApplicationUserAuctionHunterItem
+					{
+						ApplicationUser = user,
+						AuctionHunterItem = item.Entity,
+					});
+				}
 			}
 			catch (Exception e)
 			{

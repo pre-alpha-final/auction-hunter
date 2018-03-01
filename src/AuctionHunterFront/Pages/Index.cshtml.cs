@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
 
 namespace AuctionHunterFront.Pages
 {
@@ -14,6 +15,7 @@ namespace AuctionHunterFront.Pages
 	public class IndexModel : PageModel
 	{
 		private readonly AuctionHunterDbContext _auctionHunterDbContext;
+		private readonly UserManager<ApplicationUser> _userManager;
 
 		public IList<AuctionHunterItem> AuctionHunterItems { get; set; }
 		public bool HasAuctionHunterItems => AuctionHunterItems?.Count > 0;
@@ -29,19 +31,24 @@ namespace AuctionHunterFront.Pages
 		[BindProperty(SupportsGet = true)]
 		public bool ShowAll { get; set; }
 
-		public IndexModel(AuctionHunterDbContext auctionHunterDbContext)
+		public IndexModel(AuctionHunterDbContext auctionHunterDbContext, UserManager<ApplicationUser> userManager)
 		{
 			_auctionHunterDbContext = auctionHunterDbContext;
+			_userManager = userManager;
 		}
 
 		public async Task OnGetAsync()
 		{
+			var currentUser = await _userManager.GetUserAsync(HttpContext.User);
 			PageNumber = PageNumber ?? 1;
-			ItemCount = await _auctionHunterDbContext.AuctionHunterItems
-				.Where(e => ShowAll || e.MarkedAsRead == false)
+
+			ItemCount = await _auctionHunterDbContext.ApplicationUserAuctionHunterItems
+				.Where(e => ShowAll || e.ApplicationUser == currentUser)
 				.CountAsync();
-			AuctionHunterItems = await _auctionHunterDbContext.AuctionHunterItems
-				.Where(e => ShowAll || e.MarkedAsRead == false)
+
+			AuctionHunterItems = await _auctionHunterDbContext.ApplicationUserAuctionHunterItems
+				.Where(e => ShowAll || e.ApplicationUser == currentUser)
+				.Select(e => e.AuctionHunterItem)
 				.Skip(ItemsPerPage * ((int)PageNumber - 1))
 				.Take(ItemsPerPage)
 				.ToListAsync();
@@ -74,11 +81,16 @@ namespace AuctionHunterFront.Pages
 
 		private async Task MarkAsReadAsync(int id)
 		{
-			var update = new AuctionHunterItem { Id = id };
-			_auctionHunterDbContext.AuctionHunterItems.Attach(update);
+			var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+			var item = await _auctionHunterDbContext.ApplicationUserAuctionHunterItems
+				.Where(e => e.ApplicationUser == currentUser && e.AuctionHunterItem.Id == id)
+				.FirstOrDefaultAsync();
 
-			update.MarkedAsRead = true;
-			await _auctionHunterDbContext.SaveChangesAsync();
+			if (item != null)
+			{
+				_auctionHunterDbContext.ApplicationUserAuctionHunterItems.Remove(item);
+				await _auctionHunterDbContext.SaveChangesAsync();
+			}
 		}
 	}
 }

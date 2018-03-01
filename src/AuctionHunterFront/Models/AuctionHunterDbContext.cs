@@ -9,6 +9,7 @@ namespace AuctionHunterFront.Models
 		private readonly IConfiguration _configuration;
 
 		public DbSet<AuctionHunterItem> AuctionHunterItems { get; set; }
+		public DbSet<ApplicationUserAuctionHunterItem> ApplicationUserAuctionHunterItems { get; set; }
 
 		public AuctionHunterDbContext(IConfiguration configuration)
 		{
