@@ -10,19 +10,22 @@ using AuctionHunterFront.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using AuctionHunterFront.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace AuctionHunterFront.Services.Implementation
 {
 	public class G2AAuctionHunterService : IAuctionHunterService
 	{
 		private readonly IConfiguration _configuration;
+		private readonly ILogger<G2AAuctionHunterService> _logger;
 		private readonly IAuctionHunterCore _auctionHunterCore;
 		private Timer _aTimer;
 		private int _currentPageNumber = 1;
 
-		public G2AAuctionHunterService(IConfiguration configuration)
+		public G2AAuctionHunterService(IConfiguration configuration, ILogger<G2AAuctionHunterService> logger)
 		{
 			_configuration = configuration;
+			_logger = logger;
 
 			_auctionHunterCore = new AuctionHunterCoreBuilder()
 				.SetBaseUrl(G2ADefaults.DefaultBaseUrl)
@@ -53,18 +56,27 @@ namespace AuctionHunterFront.Services.Implementation
 		private async void OnTimerOnElapsed(object state)
 		{
 			// Azure sleep hack
-			await G2ADefaults.DefaultWebCllient.Get("https://auctionhunter.azurewebsites.net/");
+			await G2ADefaults.DefaultWebCllient.Get("https://auctionhunter.azurewebsites.net/Auth/Login?ReturnUrl=%2F");
 
 			var pageResult = await GetItems(_currentPageNumber);
-			using (var dbContext = new AuctionHunterDbContext(_configuration))
+			_logger.LogInformation(pageResult.DebugInfo);
+
+			try
 			{
-				foreach (var auctionItem in pageResult.AuctionItems.ToList())
+				using (var dbContext = new AuctionHunterDbContext(_configuration))
 				{
-					await TryAddAsync(dbContext, auctionItem);
+					foreach (var auctionItem in pageResult.AuctionItems.ToList())
+					{
+						await TryAddAsync(dbContext, auctionItem);
+					}
+					await dbContext.SafeSaveChangesAsync();
 				}
-				await dbContext.SafeSaveChangesAsync();
+				_currentPageNumber = _currentPageNumber % 100 + 1;
 			}
-			_currentPageNumber = _currentPageNumber % 100 + 1;
+			catch (Exception e)
+			{
+				_logger.LogError(e.ToString());
+			}
 		}
 
 		private static async Task TryAddAsync(AuctionHunterDbContext auctionHunterDbContext, AuctionItem auctionItem)

@@ -16,7 +16,7 @@ namespace AuctionHunterFront.Extensions
 			loggerFactory.AddConsole(logLevel);
 		}
 
-		public static async Task<int> SafeSaveChangesAsync(this DbContext dbContext)
+		public static async Task<int> SafeSaveChangesAsync(this DbContext dbContext, ILogger logger = null)
 		{
 			try
 			{
@@ -24,7 +24,9 @@ namespace AuctionHunterFront.Extensions
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine($"SafeSaveChangesAsync exception:\n {e}");
+				var log = $"SafeSaveChangesAsync exception:\n {e}";
+				Console.WriteLine(log);
+				logger?.LogError(log);
 			}
 
 			return -1;

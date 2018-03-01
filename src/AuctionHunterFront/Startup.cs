@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace AuctionHunterFront
 {
@@ -65,9 +66,6 @@ namespace AuctionHunterFront
 				app.UseExceptionHandler("/Error");
 			}
 
-			AHInitializer.Init();
-			serviceProvider.GetService<IAuctionHunterService>().Start();
-
 			app.UseStaticFiles();
 
 			app.UseAuthentication();
@@ -78,6 +76,12 @@ namespace AuctionHunterFront
 					name: "default",
 					template: "{controller}/{action=Index}/{id?}");
 			});
+
+			var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+			loggerFactory.AddAzureWebAppDiagnostics();
+
+			AHInitializer.Init();
+			serviceProvider.GetService<IAuctionHunterService>().Start();
 		}
 	}
 }
