@@ -40,7 +40,7 @@ namespace AuctionHunterFront.Services.Implementation
 		public Task Start()
 		{
 			if (_aTimer == null)
-				_aTimer = new Timer(OnTimerOnElapsed, null, TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(10));
+				_aTimer = new Timer(OnTimerOnElapsed, null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(10));
 
 			return Task.CompletedTask;
 		}
