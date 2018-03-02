@@ -1,8 +1,6 @@
-﻿using AuctionHunter.Infrastructure;
-
-namespace AuctionHunter.CdKeys.Implementation
+﻿namespace AuctionHunter.CdKeys.Implementation
 {
-	public class CdKeysUrlProvider : IUrlProvider
+	public class CdKeysUrlProvider : ICdKeysUrlProvider
 	{
 		public string BaseUrl { get; set; }
 

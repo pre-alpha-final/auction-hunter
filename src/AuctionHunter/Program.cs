@@ -1,4 +1,5 @@
-﻿using AuctionHunter.G2A.Implementation;
+﻿using AuctionHunter.G2A;
+using AuctionHunter.G2A.Implementation;
 using AuctionHunter.Infrastructure;
 using AuctionHunter.Infrastructure.Builders;
 using AuctionHunter.Infrastructure.Implementation;
@@ -45,10 +46,12 @@ namespace AuctionHunter
 		{
 			var services = new ServiceCollection();
 			services.AddTransient<IWebClient, DefaultWebClient>();
-			services.AddTransient<IAuctionLinkExtractor, G2AAuctionLinkExtractor>();
-			services.AddTransient<IItemsExtractor, G2AItemsExtractor>();
-			services.AddTransient<IContentExtractor, G2AContentExtractor>();
-			services.AddTransient<IUrlProvider, G2AUrlProvider>();
+
+			services.AddTransient<IG2AAuctionLinkExtractor, G2AAuctionLinkExtractor>();
+			services.AddTransient<IG2AItemsExtractor, G2AItemsExtractor>();
+			services.AddTransient<IG2AContentExtractor, G2AContentExtractor>();
+			services.AddTransient<IG2AUrlProvider, G2AUrlProvider>();
+
 			Container = services.BuildServiceProvider();
 		}
 	}

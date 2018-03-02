@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AuctionHunter.Infrastructure;
 using Newtonsoft.Json.Linq;
 
 namespace AuctionHunter.CdKeys.Implementation
 {
-	public class CdKeysItemsExtractor : IItemsExtractor
+	public class CdKeysItemsExtractor : ICdKeysItemsExtractor
 	{
 		public IList<string> GetItems(string page)
 		{

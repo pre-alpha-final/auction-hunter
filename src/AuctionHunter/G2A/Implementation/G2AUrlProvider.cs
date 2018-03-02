@@ -1,8 +1,6 @@
-﻿using AuctionHunter.Infrastructure;
-
-namespace AuctionHunter.G2A.Implementation
+﻿namespace AuctionHunter.G2A.Implementation
 {
-	public class G2AUrlProvider : IUrlProvider
+	public class G2AUrlProvider : IG2AUrlProvider
 	{
 		public string BaseUrl { get; set; }
 
