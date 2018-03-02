@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json.Linq;
+using HtmlAgilityPack;
 
 namespace AuctionHunter.CdKeys.Implementation
 {
@@ -8,8 +7,15 @@ namespace AuctionHunter.CdKeys.Implementation
 	{
 		public IList<string> GetItems(string page)
 		{
-			var token = JObject.Parse(page);
-			var items = token.SelectTokens("$.products[*]").Select(e => e.ToString()).ToList();
+			var htmlDocument = new HtmlDocument();
+			htmlDocument.LoadHtml(page);
+
+			var items = new List<string>();
+			var htmlNodeCollection = htmlDocument.DocumentNode.SelectNodes("//li[@class='item']");
+			foreach (HtmlNode htmlNode in htmlNodeCollection)
+			{
+				items.Add(htmlNode.InnerHtml);
+			}
 
 			return items;
 		}
