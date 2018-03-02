@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using HtmlAgilityPack;
+using System.Linq;
 
 namespace AuctionHunter.CdKeys.Implementation
 {
@@ -6,9 +7,12 @@ namespace AuctionHunter.CdKeys.Implementation
 	{
 		public string Extract(string item)
 		{
-			var token = JObject.Parse(item);
-			var slug = token.SelectToken("$.slug").ToString();
-			return $"https://www.g2a.com/pl-pl/{slug}";
+			var htmlDocument = new HtmlDocument();
+			htmlDocument.LoadHtml(item);
+
+			var htmlNodeCollection = htmlDocument.DocumentNode.SelectNodes("//a/@href");
+
+			return htmlNodeCollection.FirstOrDefault()?.Attributes["href"]?.Value;
 		}
 	}
 }
