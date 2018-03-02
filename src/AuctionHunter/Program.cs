@@ -1,4 +1,6 @@
-﻿using AuctionHunter.G2A;
+﻿using AuctionHunter.CdKeys;
+using AuctionHunter.CdKeys.Implementation;
+using AuctionHunter.G2A;
 using AuctionHunter.G2A.Implementation;
 using AuctionHunter.Infrastructure;
 using AuctionHunter.Infrastructure.Builders;
@@ -51,6 +53,11 @@ namespace AuctionHunter
 			services.AddTransient<IG2AItemsExtractor, G2AItemsExtractor>();
 			services.AddTransient<IG2AContentExtractor, G2AContentExtractor>();
 			services.AddTransient<IG2AUrlProvider, G2AUrlProvider>();
+
+			services.AddTransient<ICdKeysAuctionLinkExtractor, CdKeysAuctionLinkExtractor>();
+			services.AddTransient<ICdKeysItemsExtractor, CdKeysItemsExtractor>();
+			services.AddTransient<ICdKeysContentExtractor, CdKeysContentExtractor>();
+			services.AddTransient<ICdKeysUrlProvider, CdKeysUrlProvider>();
 
 			Container = services.BuildServiceProvider();
 		}
