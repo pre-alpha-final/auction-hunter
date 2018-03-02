@@ -33,9 +33,7 @@ namespace AuctionHunter.Infrastructure.Implementation
 				using (var client = new WebClient())
 				{
 					client.Headers["User-Agent"] =
-						"Mozilla/4.0 (Compatible; Windows NT 5.1; MSIE 6.0) " +
-						"(compatible; MSIE 6.0; Windows NT 5.1; " +
-						".NET CLR 1.1.4322; .NET CLR 2.0.50727)";
+						"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0";
 
 					webClientResult.Content = client.DownloadString(url);
 					webClientResult.DebugInfo += "Complete\n";

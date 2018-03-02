@@ -27,6 +27,9 @@ namespace AuctionHunterFront.Services.Implementation
 				.SetItemsExtractor(G2ADefaults.DefaultItemsExtractor)
 				.SetAuctionLinkExtractor(G2ADefaults.DefaultAuctionLinkExtractor)
 				.SetContentExtractor(G2ADefaults.DefaultContentExtractor)
+				.AddSkipPattern("Random PREMIUM Steam Key")
+				.AddSkipPattern("Random Steam Key")
+				.AddSkipPattern("Steam Gift Card")
 				.Build();
 		}
 

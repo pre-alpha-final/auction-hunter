@@ -26,9 +26,7 @@ namespace AuctionHunterFront.Services.Implementation
 				.SetItemsExtractor(CdKeysDefaults.DefaultItemsExtractor)
 				.SetAuctionLinkExtractor(CdKeysDefaults.DefaultAuctionLinkExtractor)
 				.SetContentExtractor(CdKeysDefaults.DefaultContentExtractor)
-				.AddSkipPattern("Random PREMIUM Steam Key")
-				.AddSkipPattern("Random Steam Key")
-				.AddSkipPattern("Steam Gift Card")
+				.AddSkipPattern("Out of stock")
 				.Build();
 		}
 	}

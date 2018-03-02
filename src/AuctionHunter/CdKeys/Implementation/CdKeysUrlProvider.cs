@@ -6,7 +6,7 @@
 
 		public string GetUrlForPage(int pageNumber)
 		{
-			return BaseUrl.Replace("page=", $"page={pageNumber}");
+			return BaseUrl.Insert(BaseUrl.Length, pageNumber.ToString());
 		}
 	}
 }
