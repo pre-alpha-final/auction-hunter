@@ -3,9 +3,9 @@ using System.Linq;
 using AuctionHunter.Infrastructure;
 using Newtonsoft.Json.Linq;
 
-namespace AuctionHunter.G2A.Implementation
+namespace AuctionHunter.CdKeys.Implementation
 {
-	public class G2AItemsExtractor : IItemsExtractor
+	public class CdKeysItemsExtractor : IItemsExtractor
 	{
 		public IList<string> GetItems(string page)
 		{

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
-using AuctionHunter.G2A.Implementation;
+using AuctionHunter.CdKeys.Implementation;
 using AuctionHunter.Infrastructure;
 using AuctionHunter.Infrastructure.Builders;
 using AuctionHunter.Results;
@@ -14,26 +14,26 @@ using Microsoft.Extensions.Logging;
 
 namespace AuctionHunterFront.Services.Implementation
 {
-	public class G2AAuctionHunterService : IAuctionHunterService
+	public class CdKeysAuctionHunterService : IAuctionHunterService
 	{
 		private readonly IConfiguration _configuration;
-		private readonly ILogger<G2AAuctionHunterService> _logger;
+		private readonly ILogger<CdKeysAuctionHunterService> _logger;
 		private readonly IAuctionHunterCore _auctionHunterCore;
 		private Timer _aTimer;
 		private int _currentPageNumber = 1;
 
-		public G2AAuctionHunterService(IConfiguration configuration, ILogger<G2AAuctionHunterService> logger)
+		public CdKeysAuctionHunterService(IConfiguration configuration, ILogger<CdKeysAuctionHunterService> logger)
 		{
 			_configuration = configuration;
 			_logger = logger;
 
 			_auctionHunterCore = new AuctionHunterCoreBuilder()
-				.SetBaseUrl(G2ADefaults.DefaultBaseUrl)
-				.SetUrlProvider(G2ADefaults.DefaultUrlProvider)
-				.SetWebClient(G2ADefaults.DefaultWebCllient)
-				.SetItemsExtractor(G2ADefaults.DefaultItemsExtractor)
-				.SetAuctionLinkExtractor(G2ADefaults.DefaultAuctionLinkExtractor)
-				.SetContentExtractor(G2ADefaults.DefaultContentExtractor)
+				.SetBaseUrl(CdKeysDefaults.DefaultBaseUrl)
+				.SetUrlProvider(CdKeysDefaults.DefaultUrlProvider)
+				.SetWebClient(CdKeysDefaults.DefaultWebCllient)
+				.SetItemsExtractor(CdKeysDefaults.DefaultItemsExtractor)
+				.SetAuctionLinkExtractor(CdKeysDefaults.DefaultAuctionLinkExtractor)
+				.SetContentExtractor(CdKeysDefaults.DefaultContentExtractor)
 				.AddSkipPattern("Random PREMIUM Steam Key")
 				.AddSkipPattern("Random Steam Key")
 				.AddSkipPattern("Steam Gift Card")
@@ -55,9 +55,6 @@ namespace AuctionHunterFront.Services.Implementation
 
 		private async void OnTimerOnElapsed(object state)
 		{
-			// Azure sleep hack
-			await G2ADefaults.DefaultWebCllient.Get("https://auctionhunter.azurewebsites.net/Auth/Login?ReturnUrl=%2F");
-
 			var pageResult = await GetItems(_currentPageNumber);
 			_logger.LogInformation($"Item count: {pageResult.AuctionItems.Count}\n");
 			_logger.LogInformation(pageResult.DebugInfo);

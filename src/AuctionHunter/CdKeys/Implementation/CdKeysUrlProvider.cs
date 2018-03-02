@@ -1,8 +1,8 @@
 ﻿using AuctionHunter.Infrastructure;
 
-namespace AuctionHunter.G2A.Implementation
+namespace AuctionHunter.CdKeys.Implementation
 {
-	public class G2AUrlProvider : IUrlProvider
+	public class CdKeysUrlProvider : IUrlProvider
 	{
 		public string BaseUrl { get; set; }
 

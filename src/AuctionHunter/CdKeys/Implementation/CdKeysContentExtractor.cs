@@ -1,9 +1,9 @@
 ﻿using AuctionHunter.Infrastructure;
 using Newtonsoft.Json.Linq;
 
-namespace AuctionHunter.G2A.Implementation
+namespace AuctionHunter.CdKeys.Implementation
 {
-	public class G2AContentExtractor : IContentExtractor
+	public class CdKeysContentExtractor : IContentExtractor
 	{
 		public JToken Extract(string item)
 		{
