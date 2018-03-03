@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using AuctionHunter.Extensions;
+using HtmlAgilityPack;
+using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace AuctionHunter.CdKeys.Implementation
 {
@@ -6,15 +9,26 @@ namespace AuctionHunter.CdKeys.Implementation
 	{
 		public JToken Extract(string item)
 		{
-			var token = JObject.Parse(item);
-			var image = token.SelectToken("$.banner.medium")?.ToString();
-			if (string.IsNullOrWhiteSpace(image))
+			var htmlDocument = new HtmlDocument();
+			htmlDocument.LoadHtml(item);
+
+			var htmlNodeCollection = htmlDocument.DocumentNode.SafeSelectNodes("//a/@href");
+			var name = htmlNodeCollection?.FirstOrDefault()?.Attributes["title"]?.Value;
+
+			htmlNodeCollection = htmlDocument.DocumentNode.SafeSelectNodes("//span[@class='price' and @style='display:inline']");
+			var price = htmlNodeCollection?.FirstOrDefault()?.InnerHtml;
+			if (string.IsNullOrWhiteSpace(price))
 			{
-				image = token.SelectToken("$.image.medium").ToString();
+				htmlNodeCollection = htmlDocument.DocumentNode.SafeSelectNodes("//span[@class='price']");
+				price = htmlNodeCollection?.FirstOrDefault()?.InnerHtml;
 			}
+
+			htmlNodeCollection = htmlDocument.DocumentNode.SafeSelectNodes("//img/@src");
+			var image = htmlNodeCollection?.FirstOrDefault()?.Attributes["src"]?.Value;
+
 			return new JObject(
-				new JProperty("name", token.SelectToken("$.name")),
-				new JProperty("price", $"{token.SelectToken("$.minPrice")} {token.SelectToken("$.currency")}"),
+				new JProperty("name", name),
+				new JProperty("price", $"{price?.Split(' ')[1]} {price?.Split(' ')[0]}"),
 				new JProperty("image", image));
 		}
 	}

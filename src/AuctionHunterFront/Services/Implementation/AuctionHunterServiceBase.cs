@@ -45,12 +45,12 @@ namespace AuctionHunterFront.Services.Implementation
 
 		private async void OnTimerOnElapsed(object state)
 		{
-			var pageResult = await GetItems(_currentPageNumber);
-			Logger.LogInformation($"Item count: {pageResult.AuctionItems.Count}\n");
-			Logger.LogInformation(pageResult.DebugInfo);
-
 			try
 			{
+				var pageResult = await GetItems(_currentPageNumber);
+				Logger.LogInformation($"Item count: {pageResult.AuctionItems.Count}");
+				Logger.LogInformation(pageResult.DebugInfo);
+
 				using (var dbContext = new AuctionHunterDbContext(_configuration))
 				{
 					foreach (var auctionItem in pageResult.AuctionItems.ToList())

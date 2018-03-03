@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using AuctionHunter.Extensions;
+using HtmlAgilityPack;
 using System.Linq;
 
 namespace AuctionHunter.CdKeys.Implementation
@@ -10,9 +11,9 @@ namespace AuctionHunter.CdKeys.Implementation
 			var htmlDocument = new HtmlDocument();
 			htmlDocument.LoadHtml(item);
 
-			var htmlNodeCollection = htmlDocument.DocumentNode.SelectNodes("//a/@href");
+			var htmlNodeCollection = htmlDocument.DocumentNode.SafeSelectNodes("//a/@href");
 
-			return htmlNodeCollection.FirstOrDefault()?.Attributes["href"]?.Value;
+			return htmlNodeCollection?.FirstOrDefault()?.Attributes["href"]?.Value;
 		}
 	}
 }
