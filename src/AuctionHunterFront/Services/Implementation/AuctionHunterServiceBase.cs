@@ -18,12 +18,13 @@ namespace AuctionHunterFront.Services.Implementation
 		private Timer _aTimer;
 		private int _currentPageNumber = 1;
 
+		protected Func<Task> AdditionalTask { get; set; }
+
 		protected abstract ILogger Logger { get; set; }
 		protected abstract IAuctionHunterCore AuctionHunterCore { get; set; }
 		protected abstract int MaxPages { get; set; }
 		protected abstract int DueTime { get; set; }
 		protected abstract int Period { get; set; }
-		protected virtual Task AdditionalTask { get; set; }
 
 		public AuctionHunterServiceBase(IConfiguration configuration)
 		{
@@ -63,7 +64,7 @@ namespace AuctionHunterFront.Services.Implementation
 
 				if (AdditionalTask != null)
 				{
-					await AdditionalTask;
+					await AdditionalTask();
 				}
 			}
 			catch (Exception e)

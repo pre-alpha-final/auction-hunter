@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using AuctionHunter.G2A.Implementation;
+﻿using AuctionHunter.G2A.Implementation;
 using AuctionHunter.Infrastructure;
 using AuctionHunter.Infrastructure.Builders;
 using Microsoft.Extensions.Configuration;
@@ -31,12 +30,12 @@ namespace AuctionHunterFront.Services.Implementation
 				.AddSkipPattern("Random Steam Key")
 				.AddSkipPattern("Steam Gift Card")
 				.Build();
-		}
 
-		protected override Task AdditionalTask { get; set; } = Task.Run(async () =>
-		{
-			// Azure sleep hack
-			await G2ADefaults.DefaultWebCllient.Get("https://auctionhunter.azurewebsites.net/Auth/Login?ReturnUrl=%2F");
-		});
+			AdditionalTask = async () => 
+			{
+				// Azure sleep hack
+				await G2ADefaults.DefaultWebCllient.Get("https://auctionhunter.azurewebsites.net/Auth/Login?ReturnUrl=%2F");
+			};
+		}
 	}
 }
