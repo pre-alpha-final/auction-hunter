@@ -10,9 +10,9 @@ namespace AuctionHunterFront.Services.Implementation
 	{
 		protected override ILogger Logger { get; set; }
 		protected override IAuctionHunterCore AuctionHunterCore { get; set; }
-		protected override int MaxPages { get; set; } = 1;
-		protected override int DueTime { get; set; } = 0;
-		protected override int Period { get; set; } = 10;
+		protected override int MaxPages { get; set; } = 20;
+		protected override int DueTime { get; set; } = 2;
+		protected override int Period { get; set; } = 20;
 
 		public CdKeysAuctionHunterService(IConfiguration configuration, ILogger<CdKeysAuctionHunterService> logger)
 			: base(configuration)
