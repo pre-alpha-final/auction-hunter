@@ -1,6 +1,8 @@
 ﻿using AuctionHunter.Extensions;
 using HtmlAgilityPack;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace AuctionHunter.CdKeys.Implementation
@@ -15,21 +17,33 @@ namespace AuctionHunter.CdKeys.Implementation
 			var htmlNodeCollection = htmlDocument.DocumentNode.SafeSelectNodes("//a/@href");
 			var name = htmlNodeCollection?.FirstOrDefault()?.Attributes["title"]?.Value;
 
-			htmlNodeCollection = htmlDocument.DocumentNode.SafeSelectNodes("//span[@class='price' and @style='display:inline']");
-			var price = htmlNodeCollection?.FirstOrDefault()?.InnerHtml;
-			if (string.IsNullOrWhiteSpace(price))
-			{
-				htmlNodeCollection = htmlDocument.DocumentNode.SafeSelectNodes("//span[@class='price']");
-				price = htmlNodeCollection?.FirstOrDefault()?.InnerHtml;
-			}
+			htmlNodeCollection = htmlDocument.DocumentNode.SafeSelectNodes("//span[@class='price']");
+			var priceTags = htmlNodeCollection
+				.Select(e => e.InnerHtml.TrimStart().TrimEnd())
+				.Where(e => string.IsNullOrWhiteSpace(e) == false)
+				.ToList();
+			var currency = priceTags.FirstOrDefault()?.Split(' ')[0];
+			var price = SelectLowest(priceTags);
 
 			htmlNodeCollection = htmlDocument.DocumentNode.SafeSelectNodes("//img/@src");
 			var image = htmlNodeCollection?.FirstOrDefault()?.Attributes["src"]?.Value;
 
 			return new JObject(
 				new JProperty("name", name),
-				new JProperty("price", $"{price?.Split(' ')[1]} {price?.Split(' ')[0]}"),
+				new JProperty("price", $"{price} {currency}"),
 				new JProperty("image", image));
+		}
+
+		private string SelectLowest(List<string> priceTags)
+		{
+			var prices = priceTags
+				.Select(e => decimal.Parse(e.Split(' ')[1], new CultureInfo("en-US")))
+				.ToList();
+
+			return prices
+				.Where(e => e > 0)
+				.Min()
+				.ToString(new CultureInfo("en-US"));
 		}
 	}
 }
