@@ -39,7 +39,8 @@ namespace AuctionHunterFront
 			});
 
 			services.AddSingleton<IConfiguration>(Configuration);
-			services.AddSingleton<IAuctionHunterService, G2AAuctionHunterService>();
+			services.AddSingleton<IG2AAuctionHunterService, G2AAuctionHunterService>();
+			services.AddSingleton<ICdKeysAuctionHunterService, CdKeysAuctionHunterService>();
 			services.AddSingleton<IEmailSender, EmailSender>();
 
 			services.AddMvc();
@@ -81,7 +82,8 @@ namespace AuctionHunterFront
 			loggerFactory.AddAzureWebAppDiagnostics();
 
 			AHInitializer.Init();
-			serviceProvider.GetService<IAuctionHunterService>().Start();
+			serviceProvider.GetService<IG2AAuctionHunterService>().Start();
+			serviceProvider.GetService<ICdKeysAuctionHunterService>().Start();
 		}
 	}
 }

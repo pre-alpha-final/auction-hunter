@@ -1,9 +1,8 @@
-﻿using AuctionHunter.Infrastructure;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 namespace AuctionHunter.G2A.Implementation
 {
-	public class G2AAuctionLinkExtractor : IAuctionLinkExtractor
+	public class G2AAuctionLinkExtractor : IG2AAuctionLinkExtractor
 	{
 		public string Extract(string item)
 		{
