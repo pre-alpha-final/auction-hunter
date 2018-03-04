@@ -28,10 +28,24 @@ namespace AuctionHunter.CdKeys.Implementation
 			htmlNodeCollection = htmlDocument.DocumentNode.SafeSelectNodes("//img/@src");
 			var image = htmlNodeCollection?.FirstOrDefault()?.Attributes["src"]?.Value;
 
-			return new JObject(
+			var content = new JObject(
 				new JProperty("name", name),
 				new JProperty("price", $"{price} {currency}"),
 				new JProperty("image", image));
+
+			if (item.Contains("Out of stock"))
+			{
+				content.Add(
+					new JProperty(
+						"extras",
+						new JObject(
+							new JProperty("Out of stock", true)
+						)
+					)
+				);
+			}
+
+			return content;
 		}
 
 		private string SelectLowest(List<string> priceTags)
