@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System.Globalization;
 
 namespace AuctionHunter.G2A.Implementation
 {
@@ -14,6 +15,7 @@ namespace AuctionHunter.G2A.Implementation
 			}
 			return new JObject(
 				new JProperty("name", token.SelectToken("$.name")),
+				new JProperty("rawPrice", ((JValue)token.SelectToken("$.minPrice")).ToString(new CultureInfo("en-US"))),
 				new JProperty("price", $"{token.SelectToken("$.minPrice")} {token.SelectToken("$.currency")}"),
 				new JProperty("image", image));
 		}

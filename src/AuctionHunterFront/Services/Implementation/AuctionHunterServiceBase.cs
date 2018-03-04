@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using AuctionHunterFront.Extensions;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
+using System.Globalization;
 
 namespace AuctionHunterFront.Services.Implementation
 {
@@ -44,6 +46,48 @@ namespace AuctionHunterFront.Services.Implementation
 			return await AuctionHunterCore.GetPage(pageNumber);
 		}
 
+		public async Task TryAddAsync(AuctionHunterDbContext auctionHunterDbContext, AuctionItem auctionItem)
+		{
+			try
+			{
+				var oldItem = auctionHunterDbContext.AuctionHunterItems
+					.FirstOrDefault(e => e.AuctionLink == auctionItem.AuctionLink);
+				if (oldItem != null)
+				{
+					if (PriceDropped(oldItem, auctionItem, 0.33m))
+					{
+						auctionHunterDbContext.AuctionHunterItems.Remove(oldItem);
+					}
+					else
+					{
+						return;
+					}
+				}
+
+				var item = await auctionHunterDbContext.AuctionHunterItems.AddAsync(new AuctionHunterItem
+				{
+					AuctionLink = auctionItem.AuctionLink,
+					OnPage = auctionItem.OnPage,
+					Timestamp = auctionItem.Timestamp,
+					ContentJson = auctionItem.ContentJson,
+				});
+
+				var users = await auctionHunterDbContext.Users.ToListAsync();
+				foreach (var user in users)
+				{
+					await auctionHunterDbContext.ApplicationUserAuctionHunterItems.AddAsync(new ApplicationUserAuctionHunterItem
+					{
+						ApplicationUser = user,
+						AuctionHunterItem = item.Entity,
+					});
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.LogError(e.ToString());
+			}
+		}
+
 		private async void OnTimerOnElapsed(object state)
 		{
 			try
@@ -73,37 +117,29 @@ namespace AuctionHunterFront.Services.Implementation
 			}
 		}
 
-		private async Task TryAddAsync(AuctionHunterDbContext auctionHunterDbContext, AuctionItem auctionItem)
+		private bool PriceDropped(AuctionHunterItem oldItem, AuctionItem newItem, decimal ratio)
 		{
 			try
 			{
-				var oldItem = auctionHunterDbContext.AuctionHunterItems
-					.FirstOrDefault(e => e.AuctionLink == auctionItem.AuctionLink);
-				if (oldItem != null)
-					return;
+				var newPrice = GetPrice(newItem.ContentJson);
+				var oldPrice = GetPrice(oldItem.ContentJson);
 
-				var item = await auctionHunterDbContext.AuctionHunterItems.AddAsync(new AuctionHunterItem
-				{
-					AuctionLink = auctionItem.AuctionLink,
-					OnPage = auctionItem.OnPage,
-					Timestamp = auctionItem.Timestamp,
-					ContentJson = auctionItem.ContentJson,
-				});
-
-				var users = await auctionHunterDbContext.Users.ToListAsync();
-				foreach (var user in users)
-				{
-					await auctionHunterDbContext.ApplicationUserAuctionHunterItems.AddAsync(new ApplicationUserAuctionHunterItem
-					{
-						ApplicationUser = user,
-						AuctionHunterItem = item.Entity,
-					});
-				}
+				return newPrice < oldPrice * (1 - ratio);
 			}
 			catch (Exception e)
 			{
-				Logger.LogError(e.ToString());
+				Logger.LogError($"PriceDropped error: {e.Message}");
 			}
+
+			return false;
+		}
+
+		private decimal GetPrice(string contentJson)
+		{
+			var priceToken = JToken.Parse(contentJson).SelectToken("$.rawPrice");
+			var price = ((JValue)priceToken).ToString(new CultureInfo("en-US"));
+
+			return decimal.Parse(price, new CultureInfo("en-US"));
 		}
 	}
 }

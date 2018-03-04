@@ -1,4 +1,6 @@
-﻿using AuctionHunter.Results;
+﻿using AuctionHunter.Infrastructure;
+using AuctionHunter.Results;
+using AuctionHunterFront.Models;
 using System.Threading.Tasks;
 
 namespace AuctionHunterFront.Services
@@ -7,5 +9,6 @@ namespace AuctionHunterFront.Services
 	{
 		Task Start();
 		Task<PageResult> GetItems(int pageNumber);
+		Task TryAddAsync(AuctionHunterDbContext auctionHunterDbContext, AuctionItem auctionItem);
 	}
 }

@@ -30,6 +30,7 @@ namespace AuctionHunter.CdKeys.Implementation
 
 			var content = new JObject(
 				new JProperty("name", name),
+				new JProperty("rawPrice", price),
 				new JProperty("price", $"{price} {currency}"),
 				new JProperty("image", image));
 
@@ -53,6 +54,9 @@ namespace AuctionHunter.CdKeys.Implementation
 			var prices = priceTags
 				.Select(e => decimal.Parse(e.Split(' ')[1], new CultureInfo("en-US")))
 				.ToList();
+
+			if (prices.Where(e => e > 0).Count() == 0)
+				return "0";
 
 			return prices
 				.Where(e => e > 0)
