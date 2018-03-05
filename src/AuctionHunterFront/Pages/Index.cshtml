@@ -40,7 +40,8 @@
 						<form method="post">
 							<div class="row">
 								<a class="btn button-spacing" href="@Html.Raw(auctionHunterItem.AuctionLink)">Visit</a>
-								<button class="btn button-spacing" asp-page-handler="MarkAsRead" asp-route-id="@auctionHunterItem.Id" asp-route-showall="@Model.ShowAll">Mark as read</button>
+								<button class="btn button-spacing" asp-page-handler="MarkAsRead" asp-route-id="@auctionHunterItem.Id" asp-route-showall="@Model.ShowAll">Mark read</button>
+								<a class="btn button-spacing" href="@Html.Raw(Model.GetReviewLink(auctionHunterItem.ContentJson))">See review</a>
 							</div>
 						</form>
 					</div>

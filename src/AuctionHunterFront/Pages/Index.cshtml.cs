@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Net;
 using Microsoft.AspNetCore.Identity;
 using AuctionHunterFront.Extensions;
 
@@ -91,6 +92,13 @@ namespace AuctionHunterFront.Pages
 		public JToken JsonParse(string json)
 		{
 			return JObject.Parse(json);
+		}
+
+		public string GetReviewLink(string contentJson)
+		{
+			var name = JToken.Parse(contentJson).SelectToken("$.name").ToString();
+			var urlEncodedName = WebUtility.UrlEncode(name);
+			return $"https://www.google.pl/search?tbm=vid&q={urlEncodedName}+review";
 		}
 
 		private async Task MarkAsReadAsync(int id)
