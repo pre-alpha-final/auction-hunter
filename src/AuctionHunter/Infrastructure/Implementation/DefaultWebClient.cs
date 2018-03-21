@@ -1,12 +1,14 @@
 ﻿using AuctionHunter.Results;
 using System;
-using System.Net;
 using System.Threading.Tasks;
+using AuctionHunter.Controls;
 
 namespace AuctionHunter.Infrastructure.Implementation
 {
 	public class DefaultWebClient : IWebClient
 	{
+		private readonly CookieAwareWebClient _webClient = new CookieAwareWebClient();
+
 		public async Task<WebClientResult> Get(string url)
 		{
 			var webClientResult = new WebClientResult();
@@ -26,19 +28,15 @@ namespace AuctionHunter.Infrastructure.Implementation
 			return webClientResult;
 		}
 
-		private static void GetContent(string url, WebClientResult webClientResult)
+		private void GetContent(string url, WebClientResult webClientResult)
 		{
 			try
 			{
-				using (var client = new WebClient())
-				{
-					client.Headers["User-Agent"] =
-						"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0";
-
-					webClientResult.Content = client.DownloadString(url);
-					webClientResult.DebugInfo += "Complete\n";
-					webClientResult.Success = true;
-				}
+				_webClient.Headers["User-Agent"] =
+					"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0";
+				webClientResult.Content = _webClient.DownloadString(url);
+				webClientResult.DebugInfo += "Complete\n";
+				webClientResult.Success = true;
 			}
 			catch (Exception e)
 			{

@@ -47,7 +47,7 @@ namespace AuctionHunter
 		public static void RegisterServices()
 		{
 			var services = new ServiceCollection();
-			services.AddTransient<IWebClient, DefaultWebClient>();
+			services.AddSingleton<IWebClient, DefaultWebClient>();
 
 			services.AddTransient<IG2AAuctionLinkExtractor, G2AAuctionLinkExtractor>();
 			services.AddTransient<IG2AItemsExtractor, G2AItemsExtractor>();
