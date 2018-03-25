@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Identity;
 using AuctionHunterFront.Extensions;
+using System;
 
 namespace AuctionHunterFront.Pages
 {
@@ -97,6 +98,7 @@ namespace AuctionHunterFront.Pages
 		public string GetReviewLink(string contentJson)
 		{
 			var name = JToken.Parse(contentJson).SelectToken("$.name").ToString();
+			name = SmartStrip(name);
 			var urlEncodedName = WebUtility.UrlEncode(name);
 			return $"https://www.google.pl/search?tbm=vid&q={urlEncodedName}+review";
 		}
@@ -113,6 +115,29 @@ namespace AuctionHunterFront.Pages
 				_auctionHunterDbContext.ApplicationUserAuctionHunterItems.Remove(item);
 				await _auctionHunterDbContext.SafeSaveChangesAsync();
 			}
+		}
+
+		private string SmartStrip(string name)
+		{
+			var stipList = new List<string>
+			{
+				" PC",
+				" (PC)",
+				" + DLC",
+				" Steam Key",
+				" Steam Gift",
+				" GLOBAL",
+				" ASIA",
+				" EUROPE",
+				" ROW",
+			};
+
+			foreach (var strip in stipList)
+			{
+				name = name.Replace(strip, string.Empty);
+			}
+
+			return name;
 		}
 	}
 }
