@@ -1,4 +1,5 @@
-﻿using AuctionHunter.Results;
+﻿using AuctionHunter.Extensions;
+using AuctionHunter.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +20,12 @@ namespace AuctionHunter.Infrastructure.Implementation
 		{
 			var pageResult = new PageResult
 			{
-				DebugInfo = $"Doing page number: {pageNumber}\n"
+				DebugInfo = $"Doing page number: {pageNumber}"
 			};
 
 			var url = UrlProvider.GetUrlForPage(pageNumber);
 			var webClientResult = await WebClient.Get(url);
-			pageResult.DebugInfo += webClientResult.DebugInfo;
+			pageResult.DebugInfo.AppendLine(webClientResult.DebugInfo);
 			if (webClientResult.Success == false)
 			{
 				return pageResult;
