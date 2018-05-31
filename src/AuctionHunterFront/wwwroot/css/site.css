@@ -92,7 +92,7 @@ ul {
 	.list-item {
 		width: calc(100% - 40px);
 		float: left;
-		margin-left: 30px;
+		margin-left: 20px;
 	}
 }
 
