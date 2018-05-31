@@ -10,270 +10,270 @@ using System;
 
 namespace AuctionHunterFront.Migrations
 {
-    [DbContext(typeof(AuctionHunterDbContext))]
-    partial class AuctionHunterDbContextModelSnapshot : ModelSnapshot
-    {
-        protected override void BuildModel(ModelBuilder modelBuilder)
-        {
+	[DbContext(typeof(AuctionHunterDbContext))]
+	partial class AuctionHunterDbContextModelSnapshot : ModelSnapshot
+	{
+		protected override void BuildModel(ModelBuilder modelBuilder)
+		{
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-                .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
+			modelBuilder
+				.HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+				.HasAnnotation("ProductVersion", "2.0.1-rtm-125");
 
-            modelBuilder.Entity("AuctionHunterFront.Models.ApplicationUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+			modelBuilder.Entity("AuctionHunterFront.Models.ApplicationUser", b =>
+			{
+				b.Property<string>("Id")
+					.ValueGeneratedOnAdd();
 
-                    b.Property<int>("AccessFailedCount");
+				b.Property<int>("AccessFailedCount");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
+				b.Property<string>("ConcurrencyStamp")
+					.IsConcurrencyToken();
 
-                    b.Property<string>("Email")
-                        .HasMaxLength(256);
+				b.Property<string>("Email")
+					.HasMaxLength(256);
 
-                    b.Property<bool>("EmailConfirmed");
+				b.Property<bool>("EmailConfirmed");
 
-                    b.Property<bool>("LockoutEnabled");
+				b.Property<bool>("LockoutEnabled");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd");
+				b.Property<DateTimeOffset?>("LockoutEnd");
 
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256);
+				b.Property<string>("NormalizedEmail")
+					.HasMaxLength(256);
 
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256);
+				b.Property<string>("NormalizedUserName")
+					.HasMaxLength(256);
 
-                    b.Property<string>("PasswordHash");
+				b.Property<string>("PasswordHash");
 
-                    b.Property<string>("PhoneNumber");
+				b.Property<string>("PhoneNumber");
 
-                    b.Property<bool>("PhoneNumberConfirmed");
+				b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<string>("SecurityStamp");
+				b.Property<string>("SecurityStamp");
 
-                    b.Property<bool>("TwoFactorEnabled");
+				b.Property<bool>("TwoFactorEnabled");
 
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256);
+				b.Property<string>("UserName")
+					.HasMaxLength(256);
 
-                    b.HasKey("Id");
+				b.HasKey("Id");
 
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
+				b.HasIndex("NormalizedEmail")
+					.HasName("EmailIndex");
 
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex");
+				b.HasIndex("NormalizedUserName")
+					.IsUnique()
+					.HasName("UserNameIndex");
 
-                    b.ToTable("AspNetUsers");
-                });
+				b.ToTable("AspNetUsers");
+			});
 
-            modelBuilder.Entity("AuctionHunterFront.Models.ApplicationUserAuctionHunterItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+			modelBuilder.Entity("AuctionHunterFront.Models.ApplicationUserAuctionHunterItem", b =>
+			{
+				b.Property<int>("Id")
+					.ValueGeneratedOnAdd();
 
-                    b.Property<string>("ApplicationUserId");
+				b.Property<string>("ApplicationUserId");
 
-                    b.Property<int?>("AuctionHunterItemId");
+				b.Property<int?>("AuctionHunterItemId");
 
-                    b.HasKey("Id");
+				b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+				b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("AuctionHunterItemId");
+				b.HasIndex("AuctionHunterItemId");
 
-                    b.ToTable("ApplicationUserAuctionHunterItems");
-                });
+				b.ToTable("ApplicationUserAuctionHunterItems");
+			});
 
-            modelBuilder.Entity("AuctionHunterFront.Models.AuctionHunterItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+			modelBuilder.Entity("AuctionHunterFront.Models.AuctionHunterItem", b =>
+			{
+				b.Property<int>("Id")
+					.ValueGeneratedOnAdd();
 
-                    b.Property<string>("AuctionLink")
-                        .IsRequired()
-                        .HasMaxLength(250);
+				b.Property<string>("AuctionLink")
+					.IsRequired()
+					.HasMaxLength(250);
 
-                    b.Property<string>("ContentJson");
+				b.Property<string>("ContentJson");
 
-                    b.Property<int>("OnPage");
+				b.Property<int>("OnPage");
 
-                    b.Property<DateTime>("Timestamp");
+				b.Property<DateTime>("Timestamp");
 
-                    b.HasKey("Id");
+				b.HasKey("Id");
 
-                    b.HasIndex("AuctionLink")
-                        .IsUnique();
+				b.HasIndex("AuctionLink")
+					.IsUnique();
 
-                    b.ToTable("AuctionHunterItems");
-                });
+				b.ToTable("AuctionHunterItems");
+			});
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+			{
+				b.Property<string>("Id")
+					.ValueGeneratedOnAdd();
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
+				b.Property<string>("ConcurrencyStamp")
+					.IsConcurrencyToken();
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(256);
+				b.Property<string>("Name")
+					.HasMaxLength(256);
 
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256);
+				b.Property<string>("NormalizedName")
+					.HasMaxLength(256);
 
-                    b.HasKey("Id");
+				b.HasKey("Id");
 
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasName("RoleNameIndex");
+				b.HasIndex("NormalizedName")
+					.IsUnique()
+					.HasName("RoleNameIndex");
 
-                    b.ToTable("AspNetRoles");
-                });
+				b.ToTable("AspNetRoles");
+			});
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+			{
+				b.Property<int>("Id")
+					.ValueGeneratedOnAdd();
 
-                    b.Property<string>("ClaimType");
+				b.Property<string>("ClaimType");
 
-                    b.Property<string>("ClaimValue");
+				b.Property<string>("ClaimValue");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired();
+				b.Property<string>("RoleId")
+					.IsRequired();
 
-                    b.HasKey("Id");
+				b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
+				b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims");
-                });
+				b.ToTable("AspNetRoleClaims");
+			});
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+			{
+				b.Property<int>("Id")
+					.ValueGeneratedOnAdd();
 
-                    b.Property<string>("ClaimType");
+				b.Property<string>("ClaimType");
 
-                    b.Property<string>("ClaimValue");
+				b.Property<string>("ClaimValue");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+				b.Property<string>("UserId")
+					.IsRequired();
 
-                    b.HasKey("Id");
+				b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+				b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims");
-                });
+				b.ToTable("AspNetUserClaims");
+			});
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.Property<string>("LoginProvider");
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+			{
+				b.Property<string>("LoginProvider");
 
-                    b.Property<string>("ProviderKey");
+				b.Property<string>("ProviderKey");
 
-                    b.Property<string>("ProviderDisplayName");
+				b.Property<string>("ProviderDisplayName");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+				b.Property<string>("UserId")
+					.IsRequired();
 
-                    b.HasKey("LoginProvider", "ProviderKey");
+				b.HasKey("LoginProvider", "ProviderKey");
 
-                    b.HasIndex("UserId");
+				b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins");
-                });
+				b.ToTable("AspNetUserLogins");
+			});
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId");
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+			{
+				b.Property<string>("UserId");
 
-                    b.Property<string>("RoleId");
+				b.Property<string>("RoleId");
 
-                    b.HasKey("UserId", "RoleId");
+				b.HasKey("UserId", "RoleId");
 
-                    b.HasIndex("RoleId");
+				b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles");
-                });
+				b.ToTable("AspNetUserRoles");
+			});
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.Property<string>("UserId");
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+			{
+				b.Property<string>("UserId");
 
-                    b.Property<string>("LoginProvider");
+				b.Property<string>("LoginProvider");
 
-                    b.Property<string>("Name");
+				b.Property<string>("Name");
 
-                    b.Property<string>("Value");
+				b.Property<string>("Value");
 
-                    b.HasKey("UserId", "LoginProvider", "Name");
+				b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens");
-                });
+				b.ToTable("AspNetUserTokens");
+			});
 
-            modelBuilder.Entity("AuctionHunterFront.Models.ApplicationUserAuctionHunterItem", b =>
-                {
-                    b.HasOne("AuctionHunterFront.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("ApplicationUserAuctionHunterItems")
-                        .HasForeignKey("ApplicationUserId");
+			modelBuilder.Entity("AuctionHunterFront.Models.ApplicationUserAuctionHunterItem", b =>
+			{
+				b.HasOne("AuctionHunterFront.Models.ApplicationUser", "ApplicationUser")
+					.WithMany("ApplicationUserAuctionHunterItems")
+					.HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("AuctionHunterFront.Models.AuctionHunterItem", "AuctionHunterItem")
-                        .WithMany("ApplicationUserAuctionHunterItems")
-                        .HasForeignKey("AuctionHunterItemId");
-                });
+				b.HasOne("AuctionHunterFront.Models.AuctionHunterItem", "AuctionHunterItem")
+					.WithMany("ApplicationUserAuctionHunterItems")
+					.HasForeignKey("AuctionHunterItemId");
+			});
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+			{
+				b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
+					.WithMany()
+					.HasForeignKey("RoleId")
+					.OnDelete(DeleteBehavior.Cascade);
+			});
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.HasOne("AuctionHunterFront.Models.ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+			{
+				b.HasOne("AuctionHunterFront.Models.ApplicationUser")
+					.WithMany()
+					.HasForeignKey("UserId")
+					.OnDelete(DeleteBehavior.Cascade);
+			});
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.HasOne("AuctionHunterFront.Models.ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+			{
+				b.HasOne("AuctionHunterFront.Models.ApplicationUser")
+					.WithMany()
+					.HasForeignKey("UserId")
+					.OnDelete(DeleteBehavior.Cascade);
+			});
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+			{
+				b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
+					.WithMany()
+					.HasForeignKey("RoleId")
+					.OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("AuctionHunterFront.Models.ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+				b.HasOne("AuctionHunterFront.Models.ApplicationUser")
+					.WithMany()
+					.HasForeignKey("UserId")
+					.OnDelete(DeleteBehavior.Cascade);
+			});
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.HasOne("AuctionHunterFront.Models.ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+			{
+				b.HasOne("AuctionHunterFront.Models.ApplicationUser")
+					.WithMany()
+					.HasForeignKey("UserId")
+					.OnDelete(DeleteBehavior.Cascade);
+			});
 #pragma warning restore 612, 618
-        }
-    }
+		}
+	}
 }

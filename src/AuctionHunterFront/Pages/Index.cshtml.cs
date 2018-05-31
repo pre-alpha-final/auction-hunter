@@ -44,7 +44,7 @@ namespace AuctionHunterFront.Pages
 		{
 			var currentUser = await _userManager.GetUserAsync(HttpContext.User);
 			PageNumber = PageNumber ?? 1;
-			
+
 			if (ShowAll)
 			{
 				ItemCount = await _auctionHunterDbContext.AuctionHunterItems

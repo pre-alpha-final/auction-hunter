@@ -31,7 +31,7 @@ namespace AuctionHunterFront.Services.Implementation
 				.AddSkipPattern("Steam Gift Card")
 				.Build();
 
-			AdditionalTask = async () => 
+			AdditionalTask = async () =>
 			{
 				// Azure sleep hack
 				await G2ADefaults.DefaultWebCllient.Get("https://auctionhunter.azurewebsites.net/Auth/Login?ReturnUrl=%2F");

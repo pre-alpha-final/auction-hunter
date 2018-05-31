@@ -18,5 +18,5 @@ namespace AuctionHunter.Extensions
 
 			return null;
 		}
-    }
+	}
 }

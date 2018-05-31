@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AuctionHunterFront.Extensions
 {
 	public static class DbContextExtensions
-    {
+	{
 		public static void Log(this DbContext dbContext, LogLevel logLevel = LogLevel.Information)
 		{
 			var contextServices = ((IInfrastructure<IServiceProvider>)dbContext).Instance;
