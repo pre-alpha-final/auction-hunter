@@ -28,7 +28,7 @@
 @if (Model.HasAuctionHunterItems)
 {
 	<div class="row text-center">
-		<ul>
+		<ul class="item-list">
 			@foreach (var auctionHunterItem in Model.AuctionHunterItems)
 			{
 				<li class="list-item">
@@ -79,7 +79,7 @@ else
 @section Scripts {
 	<script type="text/javascript" language="JavaScript">
 
-		$('ul').masonry({
+		$('.item-list').masonry({
 			itemSelector: '.list-item'
 		});
 
