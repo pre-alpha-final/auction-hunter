@@ -7,10 +7,12 @@ using AuctionHunter.Results;
 using AuctionHunterFront.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using AuctionHunterFront.Extensions;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using System.Globalization;
+using Microsoft.AspNetCore.Identity;
 
 namespace AuctionHunterFront.Services.Implementation
 {
@@ -41,9 +43,9 @@ namespace AuctionHunterFront.Services.Implementation
 			return Task.CompletedTask;
 		}
 
-		public async Task<PageResult> GetItems(int pageNumber)
+		public Task<PageResult> GetItems(int pageNumber)
 		{
-			return await AuctionHunterCore.GetPage(pageNumber);
+			return AuctionHunterCore.GetPage(pageNumber);
 		}
 
 		public async Task TryAddAsync(AuctionHunterDbContext auctionHunterDbContext, AuctionItem auctionItem)
@@ -72,14 +74,17 @@ namespace AuctionHunterFront.Services.Implementation
 					ContentJson = auctionItem.ContentJson,
 				});
 
-				var users = await auctionHunterDbContext.Users.ToListAsync();
-				foreach (var user in users)
+				using (var userDbContext = new UsersDbContext(_configuration))
 				{
-					await auctionHunterDbContext.ApplicationUserAuctionHunterItems.AddAsync(new ApplicationUserAuctionHunterItem
+					var users = await userDbContext.Users.ToListAsync();
+					foreach (var user in users)
 					{
-						ApplicationUser = user,
-						AuctionHunterItem = item.Entity,
-					});
+						await auctionHunterDbContext.ApplicationUserAuctionHunterItems.AddAsync(new ApplicationUserAuctionHunterItem
+						{
+							ApplicationUserId = user.Id,
+							AuctionHunterItem = item.Entity,
+						});
+					}
 				}
 			}
 			catch (Exception e)

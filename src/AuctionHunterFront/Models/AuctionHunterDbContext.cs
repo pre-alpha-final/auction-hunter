@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace AuctionHunterFront.Models
 {
-	public class AuctionHunterDbContext : IdentityDbContext<ApplicationUser>
+	public class AuctionHunterDbContext : DbContext
 	{
 		private readonly IConfiguration _configuration;
 
@@ -27,8 +26,11 @@ namespace AuctionHunterFront.Models
 		{
 			base.OnModelCreating(builder);
 
+			builder.Entity<ApplicationUserAuctionHunterItem>()
+				.HasKey(e => new { e.ApplicationUserId, e.AuctionHunterItemId });
+
 			builder.Entity<AuctionHunterItem>()
-				.HasIndex(u => u.AuctionLink)
+				.HasIndex(e => e.AuctionLink)
 				.IsUnique();
 		}
 	}

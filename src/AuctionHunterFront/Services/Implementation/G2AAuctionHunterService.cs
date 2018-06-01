@@ -3,6 +3,7 @@ using AuctionHunter.Infrastructure;
 using AuctionHunter.Infrastructure.Builders;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace AuctionHunterFront.Services.Implementation
 {

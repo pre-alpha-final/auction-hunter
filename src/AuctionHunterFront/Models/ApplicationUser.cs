@@ -1,15 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using Microsoft.AspNetCore.Identity;
 
 namespace AuctionHunterFront.Models
 {
 	public class ApplicationUser : IdentityUser
 	{
-		public virtual ICollection<ApplicationUserAuctionHunterItem> ApplicationUserAuctionHunterItems { get; set; }
-
-		public ApplicationUser()
-		{
-			ApplicationUserAuctionHunterItems = new HashSet<ApplicationUserAuctionHunterItem>();
-		}
+		public Guid OriginProductId { get; set; }
 	}
 }

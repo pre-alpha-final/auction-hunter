@@ -10,9 +10,9 @@ using System;
 
 namespace AuctionHunterFront.Migrations
 {
-    [DbContext(typeof(AuctionHunterDbContext))]
-    [Migration("20180219114624_Fixing index")]
-    partial class Fixingindex
+    [DbContext(typeof(UsersDbContext))]
+    [Migration("20180601150238_UsersDbContext Separating identity")]
+    partial class UsersDbContextSeparatingidentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,6 +46,8 @@ namespace AuctionHunterFront.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
 
+                    b.Property<Guid>("OriginProductId");
+
                     b.Property<string>("PasswordHash");
 
                     b.Property<string>("PhoneNumber");
@@ -69,31 +71,6 @@ namespace AuctionHunterFront.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("AuctionHunterFront.Models.AuctionHunterItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AuctionLink")
-                        .IsRequired()
-                        .HasMaxLength(250);
-
-                    b.Property<string>("ContentJson");
-
-                    b.Property<bool>("MarkedAsRead");
-
-                    b.Property<int>("OnPage");
-
-                    b.Property<DateTime>("Timestamp");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuctionLink")
-                        .IsUnique();
-
-                    b.ToTable("AuctionHunterItems");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
