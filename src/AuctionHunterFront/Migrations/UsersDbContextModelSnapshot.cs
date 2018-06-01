@@ -8,13 +8,12 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace AuctionHunterFront.Migrations.UsersDb
+namespace AuctionHunterFront.Migrations
 {
     [DbContext(typeof(UsersDbContext))]
-    [Migration("20180601142229_UsersDbContext Separating identity")]
-    partial class UsersDbContextSeparatingidentity
+    partial class UsersDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

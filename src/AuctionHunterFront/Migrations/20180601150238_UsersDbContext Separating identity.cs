@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
-namespace AuctionHunterFront.Migrations.UsersDb
+namespace AuctionHunterFront.Migrations
 {
     public partial class UsersDbContextSeparatingidentity : Migration
     {

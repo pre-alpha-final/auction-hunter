@@ -8,13 +8,12 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace AuctionHunterFront.Migrations
+namespace AuctionHunterFront.Migrations.AuctionHunterDb
 {
     [DbContext(typeof(AuctionHunterDbContext))]
-    [Migration("20180601141859_AuctionHunterDbContext Separating identity")]
-    partial class AuctionHunterDbContextSeparatingidentity
+    partial class AuctionHunterDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,13 +64,11 @@ namespace AuctionHunterFront.Migrations
                 {
                     b.Property<string>("ApplicationUserId");
 
-                    b.Property<string>("AuctionHunterItemId");
-
-                    b.Property<int?>("AuctionHunterItemId1");
+                    b.Property<int>("AuctionHunterItemId");
 
                     b.HasKey("ApplicationUserId", "AuctionHunterItemId");
 
-                    b.HasIndex("AuctionHunterItemId1");
+                    b.HasIndex("AuctionHunterItemId");
 
                     b.ToTable("ApplicationUserAuctionHunterItems");
                 });
@@ -108,7 +105,8 @@ namespace AuctionHunterFront.Migrations
 
                     b.HasOne("AuctionHunterFront.Models.AuctionHunterItem", "AuctionHunterItem")
                         .WithMany()
-                        .HasForeignKey("AuctionHunterItemId1");
+                        .HasForeignKey("AuctionHunterItemId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
