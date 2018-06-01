@@ -10,32 +10,6 @@ namespace AuctionHunterFront.Migrations.AuctionHunterDb
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ApplicationUser",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    NormalizedEmail = table.Column<string>(nullable: true),
-                    NormalizedUserName = table.Column<string>(nullable: true),
-                    OriginProductId = table.Column<Guid>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    UserName = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationUser", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AuctionHunterItems",
                 columns: table => new
                 {
@@ -62,12 +36,6 @@ namespace AuctionHunterFront.Migrations.AuctionHunterDb
                 {
                     table.PrimaryKey("PK_ApplicationUserAuctionHunterItems", x => new { x.ApplicationUserId, x.AuctionHunterItemId });
                     table.ForeignKey(
-                        name: "FK_ApplicationUserAuctionHunterItems_ApplicationUser_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "ApplicationUser",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_ApplicationUserAuctionHunterItems_AuctionHunterItems_AuctionHunterItemId",
                         column: x => x.AuctionHunterItemId,
                         principalTable: "AuctionHunterItems",
@@ -91,9 +59,6 @@ namespace AuctionHunterFront.Migrations.AuctionHunterDb
         {
             migrationBuilder.DropTable(
                 name: "ApplicationUserAuctionHunterItems");
-
-            migrationBuilder.DropTable(
-                name: "ApplicationUser");
 
             migrationBuilder.DropTable(
                 name: "AuctionHunterItems");

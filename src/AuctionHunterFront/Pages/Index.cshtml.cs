@@ -58,11 +58,11 @@ namespace AuctionHunterFront.Pages
 			else
 			{
 				ItemCount = await _auctionHunterDbContext.ApplicationUserAuctionHunterItems
-					.Where(e => e.ApplicationUser == currentUser)
+					.Where(e => e.ApplicationUserId == currentUser.Id)
 					.CountAsync();
 
 				AuctionHunterItems = await _auctionHunterDbContext.ApplicationUserAuctionHunterItems
-					.Where(e => e.ApplicationUser == currentUser)
+					.Where(e => e.ApplicationUserId == currentUser.Id)
 					.Select(e => e.AuctionHunterItem)
 					.Skip(ItemsPerPage * ((int)PageNumber - 1))
 					.Take(ItemsPerPage)
@@ -107,7 +107,7 @@ namespace AuctionHunterFront.Pages
 		{
 			var currentUser = await _userManager.GetUserAsync(HttpContext.User);
 			var item = await _auctionHunterDbContext.ApplicationUserAuctionHunterItems
-				.Where(e => e.ApplicationUser == currentUser && e.AuctionHunterItem.Id == id)
+				.Where(e => e.ApplicationUserId == currentUser.Id && e.AuctionHunterItem.Id == id)
 				.FirstOrDefaultAsync();
 
 			if (item != null)

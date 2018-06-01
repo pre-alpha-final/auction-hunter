@@ -20,46 +20,6 @@ namespace AuctionHunterFront.Migrations.AuctionHunterDb
                 .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
 
-            modelBuilder.Entity("AuctionHunterFront.Models.ApplicationUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AccessFailedCount");
-
-                    b.Property<string>("ConcurrencyStamp");
-
-                    b.Property<string>("Email");
-
-                    b.Property<bool>("EmailConfirmed");
-
-                    b.Property<bool>("LockoutEnabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("NormalizedEmail");
-
-                    b.Property<string>("NormalizedUserName");
-
-                    b.Property<Guid>("OriginProductId");
-
-                    b.Property<string>("PasswordHash");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("SecurityStamp");
-
-                    b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UserName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ApplicationUser");
-                });
-
             modelBuilder.Entity("AuctionHunterFront.Models.ApplicationUserAuctionHunterItem", b =>
                 {
                     b.Property<string>("ApplicationUserId");
@@ -98,11 +58,6 @@ namespace AuctionHunterFront.Migrations.AuctionHunterDb
 
             modelBuilder.Entity("AuctionHunterFront.Models.ApplicationUserAuctionHunterItem", b =>
                 {
-                    b.HasOne("AuctionHunterFront.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("AuctionHunterFront.Models.AuctionHunterItem", "AuctionHunterItem")
                         .WithMany()
                         .HasForeignKey("AuctionHunterItemId")

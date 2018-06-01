@@ -43,9 +43,9 @@ namespace AuctionHunterFront.Services.Implementation
 			return Task.CompletedTask;
 		}
 
-		public async Task<PageResult> GetItems(int pageNumber)
+		public Task<PageResult> GetItems(int pageNumber)
 		{
-			return await AuctionHunterCore.GetPage(pageNumber);
+			return AuctionHunterCore.GetPage(pageNumber);
 		}
 
 		public async Task TryAddAsync(AuctionHunterDbContext auctionHunterDbContext, AuctionItem auctionItem)
@@ -81,7 +81,7 @@ namespace AuctionHunterFront.Services.Implementation
 					{
 						await auctionHunterDbContext.ApplicationUserAuctionHunterItems.AddAsync(new ApplicationUserAuctionHunterItem
 						{
-							ApplicationUser = user,
+							ApplicationUserId = user.Id,
 							AuctionHunterItem = item.Entity,
 						});
 					}
