@@ -3,6 +3,7 @@ using AuctionHunter.Infrastructure;
 using AuctionHunter.Infrastructure.Builders;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace AuctionHunterFront.Services.Implementation
 {
@@ -14,8 +15,8 @@ namespace AuctionHunterFront.Services.Implementation
 		protected override int DueTime { get; set; } = 1;
 		protected override int Period { get; set; } = 10;
 
-		public G2AAuctionHunterService(IConfiguration configuration, ILogger<G2AAuctionHunterService> logger)
-			: base(configuration)
+		public G2AAuctionHunterService(IConfiguration configuration, ILogger<G2AAuctionHunterService> logger, IServiceProvider serviceProvider)
+			: base(configuration, serviceProvider)
 		{
 			Logger = logger;
 

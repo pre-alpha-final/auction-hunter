@@ -7,6 +7,7 @@ using AuctionHunter.Results;
 using AuctionHunterFront.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using AuctionHunterFront.Extensions;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
@@ -17,6 +18,7 @@ namespace AuctionHunterFront.Services.Implementation
 	public abstract class AuctionHunterServiceBase
 	{
 		private readonly IConfiguration _configuration;
+		private readonly IServiceProvider _serviceProvider;
 		private Timer _aTimer;
 		private int _currentPageNumber = 1;
 
@@ -28,9 +30,10 @@ namespace AuctionHunterFront.Services.Implementation
 		protected abstract int DueTime { get; set; }
 		protected abstract int Period { get; set; }
 
-		public AuctionHunterServiceBase(IConfiguration configuration)
+		public AuctionHunterServiceBase(IConfiguration configuration, IServiceProvider serviceProvider)
 		{
 			_configuration = configuration;
+			_serviceProvider = serviceProvider;
 		}
 
 		public Task Start()
@@ -72,7 +75,8 @@ namespace AuctionHunterFront.Services.Implementation
 					ContentJson = auctionItem.ContentJson,
 				});
 
-				var users = await auctionHunterDbContext.Users.ToListAsync();
+				var userDbContext = _serviceProvider.GetService<UsersDbContext>();
+				var users = await userDbContext.Users.ToListAsync();
 				foreach (var user in users)
 				{
 					await auctionHunterDbContext.ApplicationUserAuctionHunterItems.AddAsync(new ApplicationUserAuctionHunterItem
