@@ -15,8 +15,8 @@ namespace AuctionHunterFront.Services.Implementation
 		protected override int DueTime { get; set; } = 1;
 		protected override int Period { get; set; } = 10;
 
-		public G2AAuctionHunterService(IConfiguration configuration, ILogger<G2AAuctionHunterService> logger, IServiceProvider serviceProvider)
-			: base(configuration, serviceProvider)
+		public G2AAuctionHunterService(IConfiguration configuration, ILogger<G2AAuctionHunterService> logger)
+			: base(configuration)
 		{
 			Logger = logger;
 

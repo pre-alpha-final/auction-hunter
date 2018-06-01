@@ -15,8 +15,8 @@ namespace AuctionHunterFront.Services.Implementation
 		protected override int DueTime { get; set; } = 2;
 		protected override int Period { get; set; } = 20;
 
-		public CdKeysAuctionHunterService(IConfiguration configuration, ILogger<CdKeysAuctionHunterService> logger, IServiceProvider serviceProvider)
-			: base(configuration, serviceProvider)
+		public CdKeysAuctionHunterService(IConfiguration configuration, ILogger<CdKeysAuctionHunterService> logger)
+			: base(configuration)
 		{
 			Logger = logger;
 

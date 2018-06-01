@@ -12,13 +12,13 @@ using AuctionHunterFront.Extensions;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using System.Globalization;
+using Microsoft.AspNetCore.Identity;
 
 namespace AuctionHunterFront.Services.Implementation
 {
 	public abstract class AuctionHunterServiceBase
 	{
 		private readonly IConfiguration _configuration;
-		private readonly IServiceProvider _serviceProvider;
 		private Timer _aTimer;
 		private int _currentPageNumber = 1;
 
@@ -30,10 +30,9 @@ namespace AuctionHunterFront.Services.Implementation
 		protected abstract int DueTime { get; set; }
 		protected abstract int Period { get; set; }
 
-		public AuctionHunterServiceBase(IConfiguration configuration, IServiceProvider serviceProvider)
+		public AuctionHunterServiceBase(IConfiguration configuration)
 		{
 			_configuration = configuration;
-			_serviceProvider = serviceProvider;
 		}
 
 		public Task Start()
@@ -75,15 +74,17 @@ namespace AuctionHunterFront.Services.Implementation
 					ContentJson = auctionItem.ContentJson,
 				});
 
-				var userDbContext = _serviceProvider.GetService<UsersDbContext>();
-				var users = await userDbContext.Users.ToListAsync();
-				foreach (var user in users)
+				using (var userDbContext = new UsersDbContext(_configuration))
 				{
-					await auctionHunterDbContext.ApplicationUserAuctionHunterItems.AddAsync(new ApplicationUserAuctionHunterItem
+					var users = await userDbContext.Users.ToListAsync();
+					foreach (var user in users)
 					{
-						ApplicationUser = user,
-						AuctionHunterItem = item.Entity,
-					});
+						await auctionHunterDbContext.ApplicationUserAuctionHunterItems.AddAsync(new ApplicationUserAuctionHunterItem
+						{
+							ApplicationUser = user,
+							AuctionHunterItem = item.Entity,
+						});
+					}
 				}
 			}
 			catch (Exception e)
