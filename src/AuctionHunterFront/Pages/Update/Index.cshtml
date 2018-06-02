@@ -16,23 +16,15 @@
 	<script type="text/javascript" language="JavaScript">
 
 		$(document).ready(
-			function () {
-				continuousPull(1);
-			}
+			() => { pullPages(@Model.MaxPage) }
 		);
 
-		function continuousPull(pageNumber) {
-			$.ajax({
-				type: "GET",
-				url: "/Update/Run?handler=ContinuousPull&pageNumber=" + pageNumber + "&maxPage=" + @Model.MaxPage,
-				contentType: "text/html; charset=utf-8",
-				dataType: "html",
-				success: function (response) {
-					updateProgress(100 * pageNumber / @Model.MaxPage);
-					updatePage(response);
-					moveNext(pageNumber, @Model.MaxPage);
-				}
-			});
+		async function pullPages(maxPage) {
+			for (i = 1; i <= maxPage; i++) {
+				await ajaxGet("/Update/Run/" + i, updateList);
+				updateProgress(100 * i / maxPage);
+			}
+			window.location.replace("/");
 		}
 
 		function updateProgress(width) {
@@ -40,24 +32,12 @@
 			$('#updateProgress').html(width.toFixed(0) + '%');
 		}
 
-		function updatePage(response) {
+		function updateList(response) {
 			if ($("#updatelist li").length >= 5) {
 				$("#updatelist li").first().remove();
 			}
 			$("#updatelist").append(response);
 		}
 
-		function moveNext(pageNumber, maxPage) {
-			if (pageNumber >= maxPage) {
-				setTimeout(function() {
-					window.location.replace("/");
-				}, 1000);
-			} else {
-				setTimeout(function () {
-					continuousPull(++pageNumber);
-				}, 100);
-			}
-		}
-
-	</script>
+</script>
 }
