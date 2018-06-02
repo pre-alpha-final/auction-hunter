@@ -4,7 +4,6 @@ using AuctionHunterFront.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
@@ -12,7 +11,6 @@ namespace AuctionHunterFront.Pages.Auth
 {
 	public class RegisterModel : PageModel
 	{
-		private readonly Guid _originProductId = new Guid("1d2f5fda-e58e-43ee-a8a1-88001a6262ad"); // AuctionHunter
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly SignInManager<ApplicationUser> _signInManager;
 		private readonly IEmailSender _emailSender;
@@ -55,7 +53,7 @@ namespace AuctionHunterFront.Pages.Auth
 		{
 			if (ModelState.IsValid)
 			{
-				var user = new ApplicationUser { UserName = Email, Email = Email, OriginProductId = _originProductId };
+				var user = new ApplicationUser { UserName = Email, Email = Email };
 				var result = await _userManager.CreateAsync(user, Password);
 				if (result.Succeeded)
 				{
