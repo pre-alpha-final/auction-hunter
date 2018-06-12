@@ -24,6 +24,19 @@ async function ajaxGetAndReplace(url, elementToReplace) {
 	});
 }
 
+async function ajaxPost(url, postData, action) {
+	return new Promise((resolve, reject) => {
+		$.post(url, postData)
+			.done((data, textStatus, jqXhr) => {
+				action(data);
+				resolve(data);
+			})
+			.fail((jqXhr, textStatus, errorThrown) => {
+				reject();
+			});
+	});
+}
+
 async function taskDelay(miliseconds) {
 	return new Promise((resolve, reject) => {
 		setTimeout(() => resolve(), miliseconds);
