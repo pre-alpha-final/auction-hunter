@@ -1,26 +1,26 @@
 ﻿async function ajaxGet(url, action) {
 	return new Promise((resolve, reject) => {
-		$.ajax({
-			type: "GET",
-			url: url,
-			success: response => {
-				action(response);
-				resolve(response);
-			}
-		});
+		$.get(url)
+			.done((data, textStatus, jqXhr) => {
+				action(data);
+				resolve(data);
+			})
+			.fail((jqXhr, textStatus, errorThrown) => {
+				reject();
+			});
 	});
 }
 
 async function ajaxGetAndReplace(url, elementToReplace) {
 	return new Promise((resolve, reject) => {
-		$.ajax({
-			type: "GET",
-			url: url,
-			success: response => {
-				$(elementToReplace).html(response);
-				resolve(response);
-			}
-		});
+		$.get(url)
+			.done((data, textStatus, jqXhr) => {
+				$(elementToReplace).html(data);
+				resolve(data);
+			})
+			.fail((jqXhr, textStatus, errorThrown) => {
+				reject();
+			});
 	});
 }
 
