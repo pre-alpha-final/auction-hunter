@@ -4,8 +4,10 @@ var gulp = require("gulp"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
     htmlmin = require("gulp-htmlmin"),
-    uglify = require("gulp-uglify"),
-    merge = require("merge-stream"),
+	uglifyes = require('uglify-es'),
+	composer = require('gulp-uglify/composer'),
+	uglify = composer(uglifyes, console),
+	merge = require("merge-stream"),
     del = require("del"),
     bundleconfig = require("./bundleconfig.json");
 
