@@ -21,6 +21,7 @@ namespace AuctionHunterFront.Services.Implementation
 		private readonly IConfiguration _configuration;
 		private Timer _aTimer;
 		private int _currentPageNumber = 1;
+		private int _oldDays = 60;
 
 		protected Func<Task> AdditionalTask { get; set; }
 
@@ -97,28 +98,43 @@ namespace AuctionHunterFront.Services.Implementation
 		{
 			try
 			{
-				var pageResult = await GetItems(_currentPageNumber);
-				Logger.LogInformation($"Item count: {pageResult.AuctionItems.Count}");
-				Logger.LogInformation(pageResult.DebugInfo);
-
-				using (var dbContext = new AuctionHunterDbContext(_configuration))
-				{
-					foreach (var auctionItem in pageResult.AuctionItems.ToList())
-					{
-						await TryAddAsync(dbContext, auctionItem);
-					}
-					await dbContext.SafeSaveChangesAsync();
-				}
-				_currentPageNumber = _currentPageNumber % MaxPages + 1;
-
-				if (AdditionalTask != null)
-				{
-					await AdditionalTask();
-				}
+				await CheckPage();
+				DeleteOld();
 			}
 			catch (Exception e)
 			{
 				Logger.LogError(e.ToString());
+			}
+		}
+
+		private async Task CheckPage()
+		{
+			var pageResult = await GetItems(_currentPageNumber);
+			Logger.LogInformation($"Item count: {pageResult.AuctionItems.Count}");
+			Logger.LogInformation(pageResult.DebugInfo);
+
+			using (var dbContext = new AuctionHunterDbContext(_configuration))
+			{
+				foreach (var auctionItem in pageResult.AuctionItems.ToList())
+				{
+					await TryAddAsync(dbContext, auctionItem);
+				}
+				await dbContext.SafeSaveChangesAsync();
+			}
+			_currentPageNumber = _currentPageNumber % MaxPages + 1;
+
+			if (AdditionalTask != null)
+			{
+				await AdditionalTask();
+			}
+		}
+
+		private void DeleteOld()
+		{
+			using (var dbContext = new AuctionHunterDbContext(_configuration))
+			{
+				var command = $"DELETE FROM AuctionHunterItems WHERE Timestamp < NOW() - INTERVAL {_oldDays} DAY";
+				dbContext.Database.ExecuteSqlCommand(command);
 			}
 		}
 
