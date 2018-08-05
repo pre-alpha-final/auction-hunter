@@ -21,7 +21,8 @@ namespace AuctionHunterFront.Services.Implementation
 		private readonly IConfiguration _configuration;
 		private Timer _aTimer;
 		private int _currentPageNumber = 1;
-		private int _oldDays = 60;
+		private int _oldRelationDays = 30;
+		private int _oldRecordDays = 180;
 
 		protected Func<Task> AdditionalTask { get; set; }
 
@@ -63,6 +64,7 @@ namespace AuctionHunterFront.Services.Implementation
 					}
 					else
 					{
+						oldItem.Timestamp = DateTime.UtcNow;
 						return;
 					}
 				}
@@ -133,7 +135,10 @@ namespace AuctionHunterFront.Services.Implementation
 		{
 			using (var dbContext = new AuctionHunterDbContext(_configuration))
 			{
-				var command = $"DELETE FROM AuctionHunterItems WHERE Timestamp < NOW() - INTERVAL {_oldDays} DAY";
+				var command = $"DELETE FROM ApplicationUserAuctionHunterItems WHERE Timestamp < NOW() - INTERVAL {_oldRelationDays} DAY";
+				dbContext.Database.ExecuteSqlCommand(command);
+
+				command = $"DELETE FROM AuctionHunterItems WHERE Timestamp < NOW() - INTERVAL {_oldRecordDays} DAY";
 				dbContext.Database.ExecuteSqlCommand(command);
 			}
 		}
